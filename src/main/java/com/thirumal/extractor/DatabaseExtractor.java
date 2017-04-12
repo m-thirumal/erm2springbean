@@ -3,7 +3,7 @@ package com.thirumal.extractor;
 import java.util.List;
 
 import com.thirumal.config.Configuration;
-import com.thirumal.entities.Entite;
+import com.thirumal.entities.Entity;
 
 public abstract class DatabaseExtractor {
 	
@@ -13,7 +13,7 @@ public abstract class DatabaseExtractor {
 		this.configuration	= configuration;
 	}
 	
-	public abstract List<Entite> getEntities() throws Exception;
+	public abstract List<Entity> getEntities() throws Exception;
 	
 	public Configuration getConfiguration(){
 		return configuration;

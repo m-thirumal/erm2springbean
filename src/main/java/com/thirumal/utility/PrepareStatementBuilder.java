@@ -4,7 +4,7 @@ package com.thirumal.utility;
 import java.util.ArrayList;
 
 import com.thirumal.entities.Attribut;
-import com.thirumal.entities.Entite;
+import com.thirumal.entities.Entity;
 
 
 
@@ -23,7 +23,7 @@ public final class PrepareStatementBuilder {
 	private PrepareStatementBuilder(){}
 	
 	
-	public static String create(Entite dao, Action action){
+	public static String create(Entity dao, Action action){
 
 		if(dao == null){
 			throw new IllegalArgumentException("DAO object in parameter is null");
@@ -94,12 +94,12 @@ public final class PrepareStatementBuilder {
 	
 	}*/
 	
-	private static final String delete(Entite entity){
+	private static final String delete(Entity entity){
 		return update(entity);
 	}
 	
 	
-	private static final String update(Entite entity){
+	private static final String update(Entity entity){
 		
 		StringBuilder strBuilder = new StringBuilder();
 		
@@ -158,7 +158,7 @@ public final class PrepareStatementBuilder {
 	}
 	
 	
-	private static final String deletePermanently(Entite entity){
+	private static final String deletePermanently(Entity entity){
 		
 		StringBuilder strBuilder = new StringBuilder();
 		
@@ -187,7 +187,7 @@ public final class PrepareStatementBuilder {
 	}
 	
 	
-	private static final String create(Entite dao){
+	private static final String create(Entity dao){
 		
 		StringBuilder strBuilder = new StringBuilder();
 		
@@ -266,12 +266,12 @@ public final class PrepareStatementBuilder {
 	}
 	
 	
-	private static final String list(Entite dao){
+	private static final String list(Entity dao){
 		return "SELECT * FROM " + dao.getTablePrefix() + "." + dao.getRawName();
 	}
 	
 	
-	private static final String get(Entite dao){
+	private static final String get(Entity dao){
 		
 		StringBuilder strBuilder = new StringBuilder();
 

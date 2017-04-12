@@ -1,24 +1,24 @@
 package com.thirumal.render;
 
 import com.thirumal.config.Configuration;
-import com.thirumal.entities.Entite;
+import com.thirumal.entities.Entity;
 
 /**
  * 
- * @author Lo�c FALKLAND
+ * @author Thirumal
  *
  */
 public abstract class BaseClassRender {
 
-	private Entite			entity;
+	private Entity			entity;
 	private Configuration	configuration;
 	
-	public	BaseClassRender(Entite entity, Configuration configuration){
+	public	BaseClassRender(Entity entity, Configuration configuration){
 		this.entity			= entity;
 		this.configuration	=	configuration;
 	}
 	
-	public Entite getEntity(){
+	public Entity getEntity(){
 		return entity;
 	}
 	

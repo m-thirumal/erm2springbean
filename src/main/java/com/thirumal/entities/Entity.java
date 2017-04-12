@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import com.thirumal.utility.*;
 
-public class Entite {
+public class Entity {
 
 	private	String 				nom;
 	private String 				dbName;
@@ -20,7 +20,7 @@ public class Entite {
 	private boolean codeTable;
 	private HashMap<String, Integer> constantes;
 	
-	public Entite(String dbName, String tablePrefix, String nom) {
+	public Entity(String dbName, String tablePrefix, String nom) {
 		this.dbName 		=	dbName;
 		this.tablePrefix 	= 	tablePrefix;
 		this.nom 			= 	ERM2BeansHelper.StringHelper.saniziteForClassName(nom);
@@ -85,7 +85,7 @@ public class Entite {
 		this.parentClass = parentClass;
 	}
 
-	public String getNom() {
+	public String getName() {
 		return nom;
 	}
 

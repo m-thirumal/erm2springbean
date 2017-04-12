@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.thirumal.config.Configuration;
 import com.thirumal.entities.Attribut;
-import com.thirumal.entities.Entite;
+import com.thirumal.entities.Entity;
 import com.thirumal.utility.ERM2BeansHelper.StringHelper;
 
 /**
@@ -15,7 +15,7 @@ import com.thirumal.utility.ERM2BeansHelper.StringHelper;
  */
 public class ModelClassRender extends BaseClassRender {
 
-	public ModelClassRender(Entite entity, Configuration configuration) {
+	public ModelClassRender(Entity entity, Configuration configuration) {
 		super(entity, configuration);
 	}
 
@@ -26,7 +26,7 @@ public class ModelClassRender extends BaseClassRender {
 		
 		String lineSeparator 	= 	StringHelper.lineSeparator;
 		String tabulation		=	StringHelper.tabulation;
-		Entite each				=	getEntity();
+		Entity each				=	getEntity();
 		
 		each.addInterface("java.io.Serializable");
 		
@@ -83,7 +83,7 @@ public class ModelClassRender extends BaseClassRender {
 		output.append("/**" + lineSeparator + " * @author Thirumal" + lineSeparator + " *" + lineSeparator + " */" + lineSeparator);
 		
 		
-		output.append("public class " + each.getNom() +(each.hasParent() ? " extends "+each.getParentClass() : "")+(interfacesToOuput != null ? interfacesToOuput : "")+" {" + lineSeparator + lineSeparator);
+		output.append("public class " + each.getName() +(each.hasParent() ? " extends "+each.getParentClass() : "")+(interfacesToOuput != null ? interfacesToOuput : "")+" {" + lineSeparator + lineSeparator);
 
 		output.append(tabulation+"private static final long serialVersionUID = 1L;"+lineSeparator+lineSeparator);
 
@@ -114,10 +114,10 @@ public class ModelClassRender extends BaseClassRender {
 		}
 
 		output.append(tabulation+ "//Default constructor" + lineSeparator);	
-		output.append("	public " + each.getNom() + "() {}" + lineSeparator);
+		output.append("	public " + each.getName() + "() {}" + lineSeparator);
 		output.append(lineSeparator);
 		output.append(tabulation + "//Parameterized constructor" + lineSeparator);	
-		output.append("	public " + each.getNom() + "(");
+		output.append("	public " + each.getName() + "(");
 		
 		for (int i = 0; i < each.getAlAttr().toArray().length; i++){
 			output.append(each.getAlAttr().get(i).getJavaType() + " " + each.getAlAttr().get(i).getName());

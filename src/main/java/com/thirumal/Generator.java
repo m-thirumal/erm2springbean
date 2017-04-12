@@ -8,7 +8,7 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 
 import com.thirumal.config.Configuration;
-import com.thirumal.entities.Entite;
+import com.thirumal.entities.Entity;
 import com.thirumal.extractor.PostgreSQLDBExtractor;
 import com.thirumal.render.BaseClassRender;
 import com.thirumal.render.DaoClassRender;
@@ -44,9 +44,9 @@ public class Generator {
 		LOGGER.info("DB name: "+ Configuration.getDbName());
 		LOGGER.info("Extracting entities");		
 		PostgreSQLDBExtractor dbExtractor		= 	new PostgreSQLDBExtractor(Configuration.getInstance());
-		ArrayList<Entite> entities	=	null;		
+		ArrayList<Entity> entities	=	null;		
 		try {
-			entities = (ArrayList<Entite>) dbExtractor.getEntities();
+			entities = (ArrayList<Entity>) dbExtractor.getEntities();
 		} catch (Exception ex) {
 			LOGGER.severe(ex.getMessage());
 		}		
@@ -68,10 +68,10 @@ public class Generator {
 		targetDirectory	= Configuration.getTargetModelDirectory();
 		entityPckg 		= Configuration.getModelPackage();		
 		LOGGER.info("Saving entities model at "+ targetDirectory);	
-		for(Entite entity : entities){			
+		for(Entity entity : entities){			
 			//Setting pckg from the Configuration
 			entity.setModelPackage(entityPckg);			
-			className 		= 	entity.getNom();
+			className 		= 	entity.getName();
 			fileName		=	Configuration.getModelFileName(className)+".java";
 			classRender		=	new ModelClassRender(entity, Configuration.getInstance());
 			try {
@@ -89,24 +89,23 @@ public class Generator {
 			}
 			
 		}
-/* Saving DAOs */
+		/* Writing DAOs */
 		
 		targetDirectory = 	Configuration.getTargetDaoDirectory();
 		entityPckg 		= 	Configuration.getDaoPackage();
 		classContent	=	new String();
 		
-		LOGGER.info("Saving entities DAO at "+targetDirectory);
+		LOGGER.info("Saving entities DAO at "+ targetDirectory);
 		
 		ERM2BeansHelper.clearQueries(Configuration.getTargetDirectory());
 		
-		for(Entite entity : entities){
+		for(Entity entity : entities){
 			
 			//Setting pckg from the Configuration
 			entity.setDaoPackage(entityPckg);
 			entity.removeInterfaces();
-			entity.setParentClass("com.enkindle.core.persistence.dao.DaoSqlAdapter");
-
-			className 		= 	entity.getNom();
+			entity.addInterface("GenericDao<AddressTypeCd, Integer, String>");
+			className 		= 	entity.getName();
 			fileName		=	Configuration.getDaoFileName(className)+".java";
 			classRender		=	new DaoClassRender(entity, Configuration.getInstance());		
 			System.out.println("Before classRender");

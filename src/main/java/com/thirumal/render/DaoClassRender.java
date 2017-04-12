@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.thirumal.config.Configuration;
 import com.thirumal.entities.Attribut;
-import com.thirumal.entities.Entite;
+import com.thirumal.entities.Entity;
 import com.thirumal.utility.DbHelper;
 import com.thirumal.utility.ERM2BeansHelper;
 import com.thirumal.utility.ERM2BeansHelper.StringHelper;
@@ -15,7 +15,7 @@ public class DaoClassRender extends BaseClassRender {
 	
 	private ArrayList<String> 	mandatoryPckgs; 
 
-	public DaoClassRender(Entite entity, Configuration configuration) {
+	public DaoClassRender(Entity entity, Configuration configuration) {
 		
 		super(entity, configuration);
 		
@@ -27,24 +27,27 @@ public class DaoClassRender extends BaseClassRender {
 	
 	
 	private void init(){
-		addMandatoryPackage("com.enkindle.core.persistence.model.shared.Model");
-		addMandatoryPackage("com.enkindle.core.persistence.model.shared.NamedId");
-		addMandatoryPackage("com.enkindle.core.persistence.model.shared.Identifier");		
-		addMandatoryPackage("com.enkindle.core.resource.exception.SomsBaseException");
-		addMandatoryPackage("com.enkindle.core.resource.exception.ErrorFactory");
-		addMandatoryPackage("com.enkindle.core.resource.utility.WrappedEvent");
-		addMandatoryPackage("com.enkindle.core.resource.utility.WrappedLogLevel");
-		addMandatoryPackage("com.enkindle.core.service.utility.ULog");
-		addMandatoryPackage("java.util.List");
-		addMandatoryPackage("java.util.ArrayList");
+		addMandatoryPackage("java.sql.Connection");
 		addMandatoryPackage("java.sql.PreparedStatement");
-		addMandatoryPackage("java.sql.ResultSet");
+		addMandatoryPackage("java.sql.ResultSet");		
 		addMandatoryPackage("java.sql.SQLException");
-		
+		addMandatoryPackage("java.util.List");
+		addMandatoryPackage("org.springframework.beans.factory.annotation.Autowired");
+		addMandatoryPackage("org.springframework.core.env.Environment");
+		addMandatoryPackage("org.springframework.jdbc.core.JdbcTemplate");
+		addMandatoryPackage("org.springframework.jdbc.core.PreparedStatementCreator");
+		addMandatoryPackage("org.springframework.jdbc.core.RowMapper");
+		addMandatoryPackage("org.springframework.jdbc.support.GeneratedKeyHolder");
+		addMandatoryPackage("org.springframework.jdbc.support.KeyHolder");
+		addMandatoryPackage("org.springframework.stereotype.Repository");
+		addMandatoryPackage("org.springframework.test.context.ContextConfiguration");
+		addMandatoryPackage("com.enkindle.config.SqlConfig");
+		addMandatoryPackage("com.enkindle.persistance.GenericDao");
+		addMandatoryPackage("com.enkindle.persistance.model.AddressTypeCd");
 	}
 	
 	public void addMandatoryPackage(String classCanonicalName){
-		mandatoryPckgs.add("import "+classCanonicalName+";");
+		mandatoryPckgs.add("import " + classCanonicalName + ";");
 	}
 	
 
@@ -54,16 +57,16 @@ public class DaoClassRender extends BaseClassRender {
 		StringBuffer 		output				=	new StringBuffer();
 		Attribut 			attribut			=	null;
 		ArrayList<Attribut> attributes 			=	getEntity().getAlAttr();
-		String 				classNameLowerCase	=	getEntity().getNom().toLowerCase();
+		String 				classNameLowerCase	=	getEntity().getName().toLowerCase();
 		String 				methodName 			= 	null;
-		String 				className 			= 	Configuration.getDaoFileName(getEntity().getNom());
+		String 				className 			= 	Configuration.getDaoFileName(getEntity().getName());
 		String 				query				=	null;
 		String 				preparementSet 		= 	null;
 		String 				interfacesToOuput 	= 	null;
 		// String 				dbName 				=	Configuration.getDbName();
 		// String 				dbVersion			=	Configuration.getDbVersion();
 		String				targetDirectory		=	Configuration.getTargetDirectory();
-		String 				modelFileName 		= 	Configuration.getModelFileName(getEntity().getNom());
+		String 				modelFileName 		= 	Configuration.getModelFileName(getEntity().getName());
 		String				entityCanonicalName	=	getEntity().getModelCanonicalName();
 		String				lineSeparator		=	StringHelper.lineSeparator;
 		String				tabulation			=	StringHelper.tabulation;
@@ -531,8 +534,8 @@ public class DaoClassRender extends BaseClassRender {
 			output.append(lineSeparator);
 			
 			output.append(tabulation+tabulation+getEntity().getModelPackage() + "."
-					+ getEntity().getNom()+ " " + getEntity().getNom().toLowerCase() +" = ("+getEntity().getModelPackage() + "."
-					+ getEntity().getNom()+") model;"+lineSeparator);
+					+ getEntity().getName()+ " " + getEntity().getName().toLowerCase() +" = ("+getEntity().getModelPackage() + "."
+					+ getEntity().getName()+") model;"+lineSeparator);
 			output.append(tabulation+tabulation+classNameLowerCase+".setStateCd(StateCd.DELETED);"+lineSeparator);
 			
 			output.append(lineSeparator);

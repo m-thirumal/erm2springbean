@@ -11,12 +11,12 @@ import java.security.InvalidParameterException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import com.thirumal.entities.Entite;
+import com.thirumal.entities.Entity;
 import com.thirumal.utility.PrepareStatementBuilder.Action;
 
 /**
  * 
- * @author Lo�c FALKLAND
+ * @author Thirumal
  *
  */
 public final class ERM2BeansHelper {
@@ -33,10 +33,10 @@ public final class ERM2BeansHelper {
 		
 	}
 	
-	public static void addQueryInProp(String pathToSave, Entite entity, Action action,String query) throws Exception{
+	public static void addQueryInProp(String pathToSave, Entity entity, Action action,String query) throws Exception{
 		
 		if(query == null){
-			throw new IllegalArgumentException(entity.getNom()+" "+action.name());
+			throw new IllegalArgumentException(entity.getName()+" "+action.name());
 		}
 		
 		File file 			= null;
@@ -75,7 +75,7 @@ public final class ERM2BeansHelper {
 				
 			
 			
-			String queryBuilt = entity.getNom()+"."+action.name().toLowerCase()+"="+queryEscaped+StringHelper.lineSeparator;
+			String queryBuilt = entity.getName()+"."+action.name().toLowerCase()+"="+queryEscaped+StringHelper.lineSeparator;
 			byte[] queryBuiltAsBits = queryBuilt.getBytes("UTF-8");
 			
 			buffWriter.write(new String(queryBuiltAsBits,"UTF-8"));

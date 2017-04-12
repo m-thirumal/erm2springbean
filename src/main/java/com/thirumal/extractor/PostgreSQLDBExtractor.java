@@ -8,7 +8,7 @@ import java.util.List;
 
 import com.thirumal.config.Configuration;
 import com.thirumal.entities.Attribut;
-import com.thirumal.entities.Entite;
+import com.thirumal.entities.Entity;
 import com.thirumal.utility.DbHelper;
 
 
@@ -23,15 +23,15 @@ public final class PostgreSQLDBExtractor extends DatabaseExtractor {
 		super(configuration);
 	}
 
-	public List<Entite> getEntities() throws Exception {
+	public List<Entity> getEntities() throws Exception {
 
 		String dbName = Configuration.getDbName();
 		Connection connection = Configuration.getConnection();
 		DatabaseMetaData metadata = connection.getMetaData();
 		ResultSet resultSet = metadata.getColumns(dbName, "icms", null, null);
 
-		List<Entite> alTables = new ArrayList<Entite>();
-		Entite currentEntite = null;
+		List<Entity> alTables = new ArrayList<Entity>();
+		Entity currentEntite = null;
 		ArrayList<Attribut> alAttributs = null;
 
 		String checkdenom = "";
@@ -63,7 +63,7 @@ public final class PostgreSQLDBExtractor extends DatabaseExtractor {
 						pkColumnName = rs.getString("COLUMN_NAME");
 						pkColumnNames.add(pkColumnName);
 					}
-					currentEntite = new Entite(dbName, tablePrefix, tablename);
+					currentEntite = new Entity(dbName, tablePrefix, tablename);
 					if (tablePrefix.equalsIgnoreCase("Codes")) {
 						currentEntite.setCodeTable(true);
 						// Table Locale_Cd does not refer to
@@ -87,7 +87,7 @@ public final class PostgreSQLDBExtractor extends DatabaseExtractor {
 					}
 					alAttributs.add(currentAttribut);
 					currentEntite.setAlAttr(alAttributs);
-					if (!currentEntite.getNom().equalsIgnoreCase("RndView")) {
+					if (!currentEntite.getName().equalsIgnoreCase("RndView")) {
 						alTables.add(currentEntite);
 						checkdenom = tablename;
 					}
