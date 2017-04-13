@@ -41,7 +41,7 @@ public class ModelClassRender extends BaseClassRender {
 		String pckgPath = null;
 		
 		for(Attribut eachattr : each.getAlAttr()){
-			System.out.println("attribute: " + eachattr.getJavaPackagePath() + " " + eachattr.getJavaType() + " " + eachattr.getName() + " " + eachattr.getRawName() + " " + eachattr.getSqlType());;
+			// System.out.println("attribute: " + eachattr.getJavaPackagePath() + " " + eachattr.getJavaType() + " " + eachattr.getName() + " " + eachattr.getRawName() + " " + eachattr.getSqlType());;
 			javaType = eachattr.getJavaType();
 			pckgPath = eachattr.getJavaPackagePath();
 			
@@ -80,7 +80,7 @@ public class ModelClassRender extends BaseClassRender {
 			
 		}
 		
-		output.append("/**" + lineSeparator + " * @author Thirumal" + lineSeparator + " *" + lineSeparator + " */" + lineSeparator);
+		output.append("/**" + lineSeparator + " *" + lineSeparator + " * @author Thirumal" + lineSeparator + " *" + lineSeparator + " */" + lineSeparator);
 		
 		
 		output.append("public class " + each.getName() +(each.hasParent() ? " extends "+each.getParentClass() : "")+(interfacesToOuput != null ? interfacesToOuput : "")+" {" + lineSeparator + lineSeparator);

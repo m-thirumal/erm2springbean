@@ -52,7 +52,7 @@ public final class DbHelper {
 		javaTypesResultSet.put("bool", "%s.getBoolean(%s)");
 		javaTypesResultSet.put("bpchar", "%s.getString(%s)");
 		javaTypesResultSet.put("inet", "%s.getString(%s)");
-		javaTypesResultSet.put("uuid", "%s.getUuid(%s)");
+		javaTypesResultSet.put("UUID", "%s.getObject(%s)");
 		
 	}
 	
@@ -81,16 +81,11 @@ public final class DbHelper {
 		javaTypesPreparedStatementSet.put("DateTimeOffset",
 				"?.setObject(?, ?)");
 		//PostgreSQL
-		javaTypesPreparedStatementSet.put("boolean",
-				"%s.setBoolean(%s, %s)");
-		javaTypesPreparedStatementSet.put("bool",
-				"%s.setBoolean(%s, %s)");
-		javaTypesPreparedStatementSet.put("bpchar",
-				"%s.setString(%s, %s)");
-		javaTypesPreparedStatementSet.put("inet",
-				"%s.setString(%s, %s)");
-		javaTypesPreparedStatementSet.put("uuid",
-				"%s.setUuid(%s, %s)");
+		javaTypesPreparedStatementSet.put("boolean", "%s.setBoolean(%s, %s)");
+		javaTypesPreparedStatementSet.put("bool", "%s.setBoolean(%s, %s)");
+		javaTypesPreparedStatementSet.put("bpchar", "%s.setString(%s, %s)");
+		javaTypesPreparedStatementSet.put("inet", "%s.setString(%s, %s)");
+		javaTypesPreparedStatementSet.put("UUID", "%s.setObject(%s, %s)");
 		
 	}
 	
@@ -187,10 +182,11 @@ public final class DbHelper {
 		simpleNamesCanonicalNames.put("Long", "java.lang.Long");
 		simpleNamesCanonicalNames.put("Float", "java.lang.Float");
 		simpleNamesCanonicalNames.put("Double", "java.lang.Double");
-		simpleNamesCanonicalNames.put("byte[]", "java.lang.Byte");
+		simpleNamesCanonicalNames.put("byte[]", "byte[]");
 		simpleNamesCanonicalNames.put("Date", "java.util.Date");
 		simpleNamesCanonicalNames.put("Time", "java.sql.Time");
 		simpleNamesCanonicalNames.put("Timestamp", "java.sql.Timestamp");
+		simpleNamesCanonicalNames.put("UUID", "java.util.UUID");
 		simpleNamesCanonicalNames.put("Short", "java.lang.Short");
 		simpleNamesCanonicalNames.put("DateTimeOffset", "microsoft.sql.DateTimeOffset");
 		
@@ -386,7 +382,6 @@ public final class DbHelper {
 
 		String result	= null;
 		String psSet	= null;
-		
 		try {
 			psSet = javaTypeToPrepareStatementSet(javaType);
 		} catch (Exception ex) {
@@ -415,7 +410,6 @@ public final class DbHelper {
 					objectSourceAsName = "new java.sql.Date("+objectSourceAsName+".getTime())";
 					
 				}
-
 			}
 
 			/*
@@ -428,6 +422,7 @@ public final class DbHelper {
 			} */
 			
 			result = String.format(psSet, ps, index, objectSourceAsName);
+			/*System.out.println("result: " + result);
 			if (canBeNull) {
 
 				String result_tmp = "if(" + value
@@ -444,7 +439,7 @@ public final class DbHelper {
 			} else {
 				result += ";";
 			}
-
+*/
 		}
 
 		return result;
@@ -452,10 +447,8 @@ public final class DbHelper {
 	}
 
 	public static String createResulSet(String rs, String javaType, String sqlType, String name) {
-
 		String result	= null;
-		String rsGet	= null;
-		
+		String rsGet	= null;		
 		try {
 			rsGet = javaTypeToResultSetGet(javaType);
 		} catch (Exception e) {
@@ -477,15 +470,15 @@ public final class DbHelper {
 							
 				}
 				else if(sqlType.equalsIgnoreCase("date")){
-					
 					javaType = "Date";
-					
 				}
 
 			}
 
-			result = rs + ".getObject(\"" + name + "\") != null ? "
-					+ String.format(rsGet, rs, "\"" + name + "\"") + " : null";
+			result = rs + ".getObject(\"" + name + "\") != null ? "	+ String.format(rsGet, rs, "\"" + name + "\"") + " : null";
+			if (sqlType.equalsIgnoreCase("uuid")) {
+				result = rs + ".getObject(\"" + name + "\") != null ? "	+ String.format(rsGet, ("(java.util.UUID) " + rs), "\"" + name + "\"") + " : null";
+			}
 
 		}
 

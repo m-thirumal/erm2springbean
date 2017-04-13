@@ -104,7 +104,7 @@ public class Generator {
 			//Setting pckg from the Configuration
 			entity.setDaoPackage(entityPckg);
 			entity.removeInterfaces();
-			entity.addInterface("GenericDao<AddressTypeCd, Integer, String>");
+			entity.addInterface("GenericDao<" + entity.getName() + " , Integer, String>");
 			className 		= 	entity.getName();
 			fileName		=	Configuration.getDaoFileName(className)+".java";
 			classRender		=	new DaoClassRender(entity, Configuration.getInstance());		
