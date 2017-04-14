@@ -35,8 +35,6 @@ public class DaoClassRender extends BaseClassRender {
 		addMandatoryPackage("org.springframework.jdbc.support.GeneratedKeyHolder");
 		addMandatoryPackage("org.springframework.jdbc.support.KeyHolder");
 		addMandatoryPackage("org.springframework.stereotype.Repository");
-		addMandatoryPackage("org.springframework.test.context.ContextConfiguration");
-		addMandatoryPackage("com.enkindle.config.SqlConfig");
 		addMandatoryPackage("com.enkindle.persistence.GenericDao");
 	}
 	
@@ -95,8 +93,7 @@ public class DaoClassRender extends BaseClassRender {
 		}
 
 		output.append("/**" + lineSeparator  + " *" + lineSeparator + " * @author Thirumal" + lineSeparator + " *" + lineSeparator + " */" + lineSeparator);
-	//	output.append(ERM2BeansHelper.generateClassComment(dbName, dbVersion) + lineSeparator);
-		output.append("@Repository" + lineSeparator + "@ContextConfiguration(classes = { SqlConfig.class })" + lineSeparator);
+		output.append("@Repository" + lineSeparator);
 		output.append("public class " + className
 				+ (getEntity().hasParent() ? " extends " + getEntity().getParentClass() : "")
 				+ (interfacesToOuput != null ? interfacesToOuput : "") + " {"
