@@ -422,24 +422,22 @@ public final class DbHelper {
 			} */
 			
 			result = String.format(psSet, ps, index, objectSourceAsName);
-			/*System.out.println("result: " + result);
 			if (canBeNull) {
 
 				String result_tmp = "if(" + value
 						+ " == null) {\r\n";
-				result_tmp += "\t\t\t" + ps + ".setObject(" + index
+				result_tmp += "\t\t\t\t\t" + ps + ".setObject(" + index
 						+ ", null);\r\n";
-				result_tmp += "\t\t}\r\n";
-				result_tmp += "\t\telse {\r\n";
-				result_tmp += "\t\t\t" + result + ";\r\n";
-				result_tmp += "\t\t}\r\n";
+				result_tmp += "\t\t\t\t} else { \r\n";
+				result_tmp += "\t\t\t\t\t" + result + ";\r\n";
+				result_tmp += "\t\t\t\t}\r\n";
 
 				result = result_tmp;
 
 			} else {
 				result += ";";
 			}
-*/
+
 		}
 
 		return result;

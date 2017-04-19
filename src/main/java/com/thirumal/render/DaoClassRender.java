@@ -118,7 +118,7 @@ public class DaoClassRender extends BaseClassRender {
 		int psIndex = 0;
 		for (int i = 0, attributesLenght = attributes.size(); i < attributesLenght; i++) {
 			attribut = attributes.get(i);
-			if (attribut.getName().equalsIgnoreCase(ignoreRowCreationDate)) {
+			if (attribut.getName().equalsIgnoreCase(ignoreRowCreationDate) || attribut.getSqlType().equalsIgnoreCase("uuid")) {
 				continue;
 			}
 			if (!attribut.isPrimaryKey() || !attribut.isAutoincrement()) {
@@ -133,7 +133,7 @@ public class DaoClassRender extends BaseClassRender {
 				// output.append("ps.setInt("+(i+1)+", "+classNameLowerCase+"."+methodName+");"+StringHelper.lineSeparator);
 				preparementSet = DbHelper.createPreparementSet("ps", (psIndex),
 						attribut.getJavaType(), attribut.getSqlType(), classNameLowerCase + "."	+ methodName, true);
-				output.append(tabulation+tabulation+ tabulation + tabulation + preparementSet + ";" + lineSeparator);
+				output.append(tabulation+tabulation+ tabulation + tabulation + preparementSet + lineSeparator);
 			}
 
 		}
