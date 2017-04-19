@@ -257,13 +257,13 @@ public class DaoClassRender extends BaseClassRender {
 		ERM2BeansHelper.addQueryInProp(targetDirectory, getEntity(),
 				Action.CREATE, query);
 		
-		query = PrepareStatementBuilder.create(getEntity(), Action.DELETE);
-		ERM2BeansHelper.addQueryInProp(targetDirectory, getEntity(),
-				Action.DELETE, query);
-		
 		query = PrepareStatementBuilder.create(getEntity(), Action.UPDATE);
 		ERM2BeansHelper.addQueryInProp(targetDirectory, getEntity(),
 				Action.UPDATE, query);
+		
+		query = PrepareStatementBuilder.create(getEntity(), Action.DELETE);
+		ERM2BeansHelper.addQueryInProp(targetDirectory, getEntity(),
+				Action.DELETE, query);
 		
 		return output.toString();		
 	}

@@ -50,7 +50,7 @@ public final class PrepareStatementBuilder {
 			break;
 			
 			case DELETE:
-				result = delete(dao);
+				result = deletePermanently(dao);
 			break;
 			
 			case DELETE_PERMANENTLY:
@@ -205,7 +205,7 @@ public final class PrepareStatementBuilder {
 		for(int i = 0, attributesLength = attributes.size(); i < attributesLength; i++){
 			
 			attribut = attributes.get(i);
-			if (attribut.getName().equalsIgnoreCase("rowCreationDate") || attribut.getName().equalsIgnoreCase("rowUpdatedDate")) {
+			if (attribut.getName().equalsIgnoreCase("rowCreationDate") || attribut.getName().toLowerCase().contains("uuid")) {
 				continue;
 			}
 			/*
@@ -239,7 +239,7 @@ public final class PrepareStatementBuilder {
 		for(int i = 0, attributesLength = attributes.size(); i < attributesLength; i++){
 			
 			attribut = attributes.get(i);
-			if (attribut.getName().equalsIgnoreCase("rowCreationDate") || attribut.getName().equalsIgnoreCase("rowUpdatedDate")) {
+			if (attribut.getName().equalsIgnoreCase("rowCreationDate") || attribut.getName().toLowerCase().contains("uuid")) {
 				continue;
 			}
 			toInclude = !attribut.isPrimaryKey() || !attribut.isAutoincrement();
