@@ -58,13 +58,12 @@ public class Generator {
 		BaseClassRender classRender		=	null;
 		String 			classContent	=	null;
 		String 			entityPckg		=	null;		
-		LOGGER.info("Creating output directory: "+targetDirectory);		
+		LOGGER.info("Creating output directory: " + targetDirectory);		
 		try {
 			ERM2BeansHelper.createDirectory(targetDirectory);
 		} catch (Exception e) {
 			LOGGER.info("Impossible to create the root folder: "+targetDirectory);
 		}		
-			
 		targetDirectory	= Configuration.getTargetModelDirectory();
 		entityPckg 		= Configuration.getModelPackage();		
 		LOGGER.info("Saving entities model at "+ targetDirectory);	
@@ -94,13 +93,9 @@ public class Generator {
 		targetDirectory = 	Configuration.getTargetDaoDirectory();
 		entityPckg 		= 	Configuration.getDaoPackage();
 		classContent	=	new String();
-		
 		LOGGER.info("Saving entities DAO at "+ targetDirectory);
-		
 		ERM2BeansHelper.clearQueries(Configuration.getTargetDirectory());
-		
-		for(Entity entity : entities){
-			
+		for(Entity entity : entities) {
 			//Setting pckg from the Configuration
 			entity.setDaoPackage(entityPckg);
 			entity.removeInterfaces();
@@ -108,13 +103,11 @@ public class Generator {
 			className 		= 	entity.getName();
 			fileName		=	Configuration.getDaoFileName(className)+".java";
 			classRender		=	new DaoClassRender(entity, Configuration.getInstance());		
-			System.out.println("Before classRender");
 			try {
 				classContent	=	classRender.render();
 			} catch (Exception ex) {
 				LOGGER.severe("Impossible to create the DAO "+className+". Exception message: "+ex.getMessage());
 			}
-
 			try {
 				LOGGER.info("Create dao "+className+". Target path: "+targetDirectory+File.separator+fileName);
 				ERM2BeansHelper.writeFile(classContent, targetDirectory, fileName, false);
@@ -122,11 +115,8 @@ public class Generator {
 				LOGGER.severe("Impossible to create the DAO "+className+". Exception message: "+ex.getMessage());
 				break;
 			}
-			
 		}
-		
 		LOGGER.info("Operation complete");
-		
     }
     
 }

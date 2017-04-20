@@ -1,9 +1,10 @@
 package com.thirumal.render;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.thirumal.config.Configuration;
-import com.thirumal.entities.Attribut;
+import com.thirumal.entities.Attribute;
 import com.thirumal.entities.Entity;
 import com.thirumal.utility.DbHelper;
 import com.thirumal.utility.ERM2BeansHelper;
@@ -47,8 +48,8 @@ public class DaoClassRender extends BaseClassRender {
 	public String render() throws Exception {
 		
 		StringBuffer 		output				=	new StringBuffer();
-		Attribut 			attribut			=	null;
-		ArrayList<Attribut> attributes 			=	getEntity().getAlAttr();
+		Attribute 			attribut			=	null;
+		ArrayList<Attribute> attributes 			=	getEntity().getAlAttr();
 		String 				classNameLowerCase	=	getEntity().getName().toLowerCase();
 		String 				methodName 			= 	null;
 		String 				className 			= 	Configuration.getDaoFileName(getEntity().getName());
@@ -67,7 +68,7 @@ public class DaoClassRender extends BaseClassRender {
 		
 		ERM2BeansHelper.writeFile("#"+className, targetDirectory, "queries.properties", true);
 			
-		for (Attribut attr : attributes){
+		for (Attribute attr : attributes){
 			if(attr.isPrimaryKey()){
 				pkInJavaType = attr.getName();
 				pkInRaw = attr.getRawName();
@@ -75,9 +76,20 @@ public class DaoClassRender extends BaseClassRender {
 			}
 		}
 		
+		int pkSize = 0;
+		List<String> pkAttributes = new ArrayList<String>();
+		for (Attribute attr: attributes) {
+			if (attr.isPrimaryKey()) {
+				pkSize++;
+				pkAttributes.add(attr.getRawName());
+			}
+		}
 		output.append("package "+getEntity().getDaoPackage()+";"+lineSeparator);
 		output.append(lineSeparator);
 		output.append("import com.enkindle.persistence.model." + modelFileName + ";" + lineSeparator);
+		if (pkSize == 2) {
+			output.append("import java.sql.Statement;" + lineSeparator);
+		}
 		for(String pckg : mandatoryPckgs){
 			output.append(pckg+lineSeparator);
 		}
@@ -114,14 +126,19 @@ public class DaoClassRender extends BaseClassRender {
 				tabulation + tabulation + tabulation + "@Override" + lineSeparator +
 				tabulation + tabulation + tabulation + "public PreparedStatement createPreparedStatement(Connection con) throws SQLException {" + lineSeparator +
 				tabulation + tabulation + tabulation + "PreparedStatement ps = con.prepareStatement(environment.getProperty(\"" + 
-				modelFileName + ".create\"), new String[] { \"" + pkInRaw + "\" });" + lineSeparator);
+				modelFileName + ".create\"), "); 
+		if (pkSize == 2) {
+			output.append("Statement.RETURN_GENERATED_KEYS);;" + lineSeparator);
+		} else {
+			output.append("new String[] { \"" + pkInRaw + "\" });" + lineSeparator);
+		}
 		int psIndex = 0;
 		for (int i = 0, attributesLenght = attributes.size(); i < attributesLenght; i++) {
 			attribut = attributes.get(i);
 			if (attribut.getName().equalsIgnoreCase(ignoreRowCreationDate) || attribut.getSqlType().equalsIgnoreCase("uuid")) {
 				continue;
 			}
-			if (!attribut.isPrimaryKey() || !attribut.isAutoincrement()) {
+			if (pkSize == 2 || !attribut.isPrimaryKey() || !attribut.isAutoincrement()) {
 				psIndex++;
 				if (!attribut.getJavaType().equalsIgnoreCase("Boolean")) {
 					methodName = StringHelper.saniziteForClassName(attribut.getName());
@@ -133,15 +150,27 @@ public class DaoClassRender extends BaseClassRender {
 				// output.append("ps.setInt("+(i+1)+", "+classNameLowerCase+"."+methodName+");"+StringHelper.lineSeparator);
 				preparementSet = DbHelper.createPreparementSet("ps", (psIndex),
 						attribut.getJavaType(), attribut.getSqlType(), classNameLowerCase + "."	+ methodName, true);
-				output.append(tabulation+tabulation+ tabulation + tabulation + preparementSet + lineSeparator);
+				output.append(tabulation+tabulation+ tabulation + tabulation + preparementSet);
 			}
 
 		}
 		output.append(tabulation+tabulation+ tabulation + tabulation +"return ps;" + lineSeparator);
 		output.append(tabulation+tabulation+ tabulation + "}" + lineSeparator);
-		output.append(tabulation+tabulation+  "}, holder);" + lineSeparator + tabulation
-				+ tabulation + "return get(holder.getKey().intValue());" + lineSeparator);
-		output.append(tabulation + "}" + lineSeparator + lineSeparator );
+		output.append(tabulation+tabulation+  "}, holder);" + lineSeparator);
+		if (pkSize == 2) {
+			output.append(tabulation + tabulation + "return get(Integer.parseInt(holder.getKeys().get(\"" + pkAttributes.get(0) +
+					"\").toString()), Integer.parseInt(holder.getKeys().get(\""+ pkAttributes.get(1) + "\").toString()));" +  lineSeparator);
+			output.append(tabulation + "}" + lineSeparator + lineSeparator );
+			output.append(tabulation + "public " + modelFileName + " get(Integer " + pkAttributes.get(0) + ", Integer " + pkAttributes.get(1) + ") {" + lineSeparator);
+			output.append(tabulation + tabulation + "return jdbcTemplate.queryForObject(environment.getProperty(\"" + modelFileName +
+					".getck\"), new Object[] { " + pkAttributes.get(0) + ", " + pkAttributes.get(1) + 
+					" }, new " + modelFileName + "RowMapper());" + lineSeparator + tabulation + "}" + lineSeparator + lineSeparator);
+		} else {
+			output.append(tabulation + tabulation + "return get(holder.getKey().intValue());" + lineSeparator);
+			output.append(tabulation + "}" + lineSeparator + lineSeparator );
+		}
+		
+		
 		/* get Method */
 		output.append(tabulation + "@Override" + lineSeparator);
 		output.append(tabulation+"public "+ modelFileName + " get(Integer id) {" +  lineSeparator);
@@ -248,7 +277,11 @@ public class DaoClassRender extends BaseClassRender {
 		query = PrepareStatementBuilder.create(getEntity(), Action.LIST);
 		ERM2BeansHelper.addQueryInProp(targetDirectory, getEntity(), Action.LIST,
 				query);		
-	
+		if (pkSize == 2) {
+			query = PrepareStatementBuilder.create(getEntity(), Action.GETCK);
+			ERM2BeansHelper.addQueryInProp(targetDirectory,
+					getEntity(), Action.GETCK, query);
+		}
 		query = PrepareStatementBuilder.create(getEntity(), Action.GET);
 		ERM2BeansHelper.addQueryInProp(targetDirectory,
 				getEntity(), Action.GET, query);

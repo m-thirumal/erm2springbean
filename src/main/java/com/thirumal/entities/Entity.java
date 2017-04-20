@@ -10,7 +10,7 @@ public class Entity {
 	private	String 				nom;
 	private String 				dbName;
 	private String 				tablePrefix;
-	private ArrayList<Attribut> alAttr;
+	private ArrayList<Attribute> alAttr;
 	private String				parentClass;
 	private ArrayList<String>	interfaces;
 	private String				modelPckg;
@@ -93,11 +93,11 @@ public class Entity {
 		this.nom = ERM2BeansHelper.StringHelper.saniziteForClassName(nom);
 	}
 
-	public ArrayList<Attribut> getAlAttr() {
+	public ArrayList<Attribute> getAlAttr() {
 		return alAttr;
 	}
 
-	public void setAlAttr(ArrayList<Attribut> alAttr) {
+	public void setAlAttr(ArrayList<Attribute> alAttr) {
 		this.alAttr = alAttr;
 	}
 

@@ -6,9 +6,9 @@ import java.util.logging.Logger;
 
 import com.thirumal.utility.*;
 
-public class Attribut {
+public class Attribute {
 	
-	private	static	final	Logger	LOGGER		=	Logger.getLogger(Attribut.class.getName());
+	private	static	final	Logger	LOGGER		=	Logger.getLogger(Attribute.class.getName());
 
 	private String name;
 	private String type;
@@ -22,7 +22,7 @@ public class Attribut {
 	private String rawName;
 	
 	//Constructeur param�tr�
-	public Attribut(String name, String type, Integer size) {
+	public Attribute(String name, String type, Integer size) {
 		
 		rawName		=	name;
 		this.name 	= 	ERM2BeansHelper.StringHelper.sanitizeForAttributName(name.toLowerCase());

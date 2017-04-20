@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.thirumal.config.Configuration;
-import com.thirumal.entities.Attribut;
+import com.thirumal.entities.Attribute;
 import com.thirumal.entities.Entity;
 import com.thirumal.utility.ERM2BeansHelper.StringHelper;
 
@@ -40,7 +40,7 @@ public class ModelClassRender extends BaseClassRender {
 		String javaType = null;
 		String pckgPath = null;
 		
-		for(Attribut eachattr : entity.getAlAttr()){
+		for(Attribute eachattr : entity.getAlAttr()){
 			// System.out.println("attribute: " + eachattr.getJavaPackagePath() + " " + eachattr.getJavaType() + " " + eachattr.getName() + " " + eachattr.getRawName() + " " + eachattr.getSqlType());;
 			javaType = eachattr.getJavaType();
 			pckgPath = eachattr.getJavaPackagePath();
@@ -89,7 +89,7 @@ public class ModelClassRender extends BaseClassRender {
 
 		output.append(tabulation+"//Declarating fields" + lineSeparator);
 		
-		for (Attribut eachattr : entity.getAlAttr()){
+		for (Attribute eachattr : entity.getAlAttr()){
 			//TODO: parser le nom de la bd snakeCase en camelCase
 			output.append("	private " + eachattr.getJavaType() + " " + eachattr.getName() + ";" + lineSeparator);
 		}
@@ -128,7 +128,7 @@ public class ModelClassRender extends BaseClassRender {
 		
 		output.append(") {" + lineSeparator);
 		
-		for (Attribut eachattr : entity.getAlAttr()){
+		for (Attribute eachattr : entity.getAlAttr()){
 			output.append("		this." + eachattr.getName() + " = " + eachattr.getName() + ";" + lineSeparator);
 		}
 		
@@ -138,7 +138,7 @@ public class ModelClassRender extends BaseClassRender {
 		
 		String resultGetSetName = null;
 		
-		for (Attribut eachattr : entity.getAlAttr()){
+		for (Attribute eachattr : entity.getAlAttr()){
 			//Getter
 			output.append("	public " + eachattr.getJavaType() + " ");
 			
@@ -179,9 +179,9 @@ public class ModelClassRender extends BaseClassRender {
 			if (i == 0) {
 				output.append(" + " + "\"" + entity.getAlAttr().get(i).getRawName() + " = \" + " + entity.getAlAttr().get(i).getName() + lineSeparator);
 			} else if ((i + 1) == entity.getAlAttr().size() )  {
-				output.append(tabulation + tabulation + tabulation + tabulation +  " + " +  "\"" + entity.getAlAttr().get(i).getName() + " = \" + " + entity.getAlAttr().get(i).getName() + " + \"]\";");
+				output.append(tabulation + tabulation + tabulation + tabulation +  " + " +  "\", " + entity.getAlAttr().get(i).getName() + " = \" + " + entity.getAlAttr().get(i).getName() + " + \"]\";");
 			} else {
-				output.append(tabulation + tabulation + tabulation + tabulation +  " + " + "\"" + entity.getAlAttr().get(i).getName() + " = \" + " + entity.getAlAttr().get(i).getName() + lineSeparator);
+				output.append(tabulation + tabulation + tabulation + tabulation +  " + " + "\", " + entity.getAlAttr().get(i).getName() + " = \" + " + entity.getAlAttr().get(i).getName() + lineSeparator);
 			}
 			
 		}

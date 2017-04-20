@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.thirumal.config.Configuration;
-import com.thirumal.entities.Attribut;
+import com.thirumal.entities.Attribute;
 import com.thirumal.entities.Entity;
 import com.thirumal.utility.DbHelper;
 
@@ -32,7 +32,7 @@ public final class PostgreSQLDBExtractor extends DatabaseExtractor {
 
 		List<Entity> alTables = new ArrayList<Entity>();
 		Entity currentEntite = null;
-		ArrayList<Attribut> alAttributs = null;
+		ArrayList<Attribute> alAttributs = null;
 
 		String checkdenom = "";
 
@@ -63,9 +63,6 @@ public final class PostgreSQLDBExtractor extends DatabaseExtractor {
 						pkColumnName = rs.getString("COLUMN_NAME");
 						pkColumnNames.add(pkColumnName);
 					}
-					if (pkColumnNames.size() > 1) {
-						System.out.println(tablename + " size : " + pkColumnNames.size());					
-					}
 					currentEntite = new Entity(dbName, tablePrefix, tablename);
 					if (tablePrefix.equalsIgnoreCase("Codes")) {
 						currentEntite.setCodeTable(true);
@@ -76,8 +73,8 @@ public final class PostgreSQLDBExtractor extends DatabaseExtractor {
 									DbHelper.retrieveCdForConstantes(connection, dbName, tablePrefix, tablename));
 						}
 					}
-					alAttributs = new ArrayList<Attribut>();
-					Attribut currentAttribut = new Attribut(name, type, size);
+					alAttributs = new ArrayList<Attribute>();
+					Attribute currentAttribut = new Attribute(name, type, size);
 					for (String pkCol : pkColumnNames) {
 					//	System.out.println("pkCol " + pkCol);
 					//	System.out.println(currentAttribut.getName());
@@ -96,7 +93,7 @@ public final class PostgreSQLDBExtractor extends DatabaseExtractor {
 					}
 				} else {
 					// Creation du nouvel attribut
-					Attribut currentAttribut = new Attribut(name, type, size);
+					Attribute currentAttribut = new Attribute(name, type, size);
 					for (String pkCol : pkColumnNames) {
 						/*
 						 * System.out.println("pkCol "+pkCol);

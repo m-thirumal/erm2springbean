@@ -2,8 +2,9 @@ package com.thirumal.utility;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
-import com.thirumal.entities.Attribut;
+import com.thirumal.entities.Attribute;
 import com.thirumal.entities.Entity;
 
 
@@ -14,6 +15,7 @@ public final class PrepareStatementBuilder {
 	public enum Action {
 		LIST,
 		GET,
+		GETCK,
 		CREATE,
 		UPDATE,
 		DELETE,
@@ -27,16 +29,18 @@ public final class PrepareStatementBuilder {
 
 		if(dao == null){
 			throw new IllegalArgumentException("DAO object in parameter is null");
-		}
-		
+		}		
 		String result = null;
-		
 		switch(action){
 			
 			case GET:
 			     result = get(dao);
 			break;
-				
+			
+			case GETCK:
+				result = getComp(dao);
+			break;
+			
 			case LIST:
 				result = list(dao);
 			break;
@@ -58,10 +62,7 @@ public final class PrepareStatementBuilder {
 			break;
 
 		}
-		
-		
 		return result;
-		
 	}
 	
 	
@@ -94,175 +95,124 @@ public final class PrepareStatementBuilder {
 	
 	}*/
 	
+	private static String getComp(Entity dao) {
+		StringBuilder strBuilder = new StringBuilder();
+		strBuilder.append("SELECT * FROM " + dao.getTablePrefix() + "." + dao.getRawName());
+		ArrayList<Attribute> attributes = dao.getAlAttr();
+		List<String> pkAttributes = new ArrayList<String>();
+		for (Attribute attr: attributes) {
+			if (attr.isPrimaryKey()) {
+				pkAttributes.add(attr.getRawName());
+			}
+		}
+		strBuilder.append(" WHERE " + pkAttributes.get(0) + " = ? AND " + pkAttributes.get(1) + " = ? ");
+		return strBuilder.toString();
+	}
+
+/*
 	private static final String delete(Entity entity){
 		return update(entity);
 	}
+	*/
 	
-	
-	private static final String update(Entity entity){
-		
+	private static final String update(Entity entity) {
 		StringBuilder strBuilder = new StringBuilder();
-		
 		strBuilder.append("UPDATE " + entity.getTablePrefix() + "." + entity.getRawName());
-		
 		strBuilder.append(" SET ");
-		
-		Attribut attribut = null;
-		ArrayList<Attribut> attributes = entity.getAlAttr();
-		
+		Attribute attribut = null;
+		ArrayList<Attribute> attributes = entity.getAlAttr();
 		String tmp = null;
-		
 		boolean toInclude = false;
-		
 		for(int i = 0, attributesLength = attributes.size(); i < attributesLength; i++){
-			
 			attribut = attributes.get(i);
 			if (attribut.getName().equalsIgnoreCase("rowCreationDate") || attribut.getName().equalsIgnoreCase("rowUpdatedDate")) {
 				continue;
 			}
 			toInclude = !attribut.isPrimaryKey() || !attribut.isAutoincrement();
-			
-			if(toInclude){
-				
+			if(toInclude) {
 				tmp = attribut.getRawName()+" = ?";
-				
 				if(i < attributesLength - 1){
 					tmp += ", ";
 				}
-				
 				strBuilder.append(tmp);
-				
 			}
-
 		}
-		
 		String whereStatement = null;
-		
-		for(Attribut attr : attributes){
+		for(Attribute attr : attributes){
 			if (attribut.getName().equalsIgnoreCase("rowCreationDate") || attribut.getName().equalsIgnoreCase("rowUpdatedDate")) {
 				continue;
 			}
 			if(attr.isPrimaryKey()){
-				
 				whereStatement = attr.getRawName()+" = ?";
 				break;
-				
 			}
-			
 		}
-		
 		strBuilder.append(" WHERE "+whereStatement);
-
 		return strBuilder.toString();
-		
 	}
 	
 	
-	private static final String deletePermanently(Entity entity){
-		
+	private static final String deletePermanently(Entity entity) {
 		StringBuilder strBuilder = new StringBuilder();
-		
-		ArrayList<Attribut> attributes = entity.getAlAttr();
-		
+		ArrayList<Attribute> attributes = entity.getAlAttr();
 		strBuilder.append("DELETE FROM " + entity.getTablePrefix() + "." + entity.getRawName());
-		
 		String whereStatement = null;
-		
-		for(Attribut attr : attributes){
-			
-			if(attr.isPrimaryKey()){
-				
+		for(Attribute attr : attributes) {
+			if(attr.isPrimaryKey()) {
 				whereStatement = attr.getRawName()+" = ?";
 				break;
-				
 			}
-			
 		}
-		
 		strBuilder.append(" WHERE "+whereStatement);
-		
-		
 		return strBuilder.toString();
-		
 	}
 	
 	
-	private static final String create(Entity dao){
-		
-		StringBuilder strBuilder = new StringBuilder();
-		
+	private static final String create(Entity dao) {		
+		StringBuilder strBuilder = new StringBuilder();		
 		strBuilder.append("INSERT INTO " + dao.getTablePrefix() + "." + dao.getRawName());
-		
 		strBuilder.append("(");
-		
-		Attribut attribut = null;
-		ArrayList<Attribut> attributes = dao.getAlAttr();
-		
+		Attribute attribut = null;
+		ArrayList<Attribute> attributes = dao.getAlAttr();
 		String tmp = null;
-		
 		boolean toInclude = false;
-		
-		for(int i = 0, attributesLength = attributes.size(); i < attributesLength; i++){
-			
+		int pkSize = 0;
+		for (Attribute attr: attributes) {
+			if (attr.isPrimaryKey())
+				pkSize++;
+		}
+		for(int i = 0, attributesLength = attributes.size(); i < attributesLength; i++) {
 			attribut = attributes.get(i);
 			if (attribut.getName().equalsIgnoreCase("rowCreationDate") || attribut.getName().toLowerCase().contains("uuid")) {
 				continue;
 			}
-			/*
-			if(attribut.isPrimaryKey() && attribut.isAutoincrement()){
-				
-			}
-			*/
-			
-			toInclude = !attribut.isPrimaryKey() || !attribut.isAutoincrement();
-			
-			if(toInclude){
-				
-				//System.out.println(attribut.getName().toUpperCase()+" A INCLURE.");
-				
+			toInclude = pkSize == 2 || !attribut.isPrimaryKey() || !attribut.isAutoincrement();
+			if(toInclude) {
 				tmp = attribut.getRawName();
-				
 				if(i < attributesLength - 1){
 					tmp += ", ";
 				}
-				
 				strBuilder.append(tmp);
-				
 			}
-			
 		}
-		
 		strBuilder.append(") ");
-		
 		strBuilder.append("VALUES (");
-		
-		for(int i = 0, attributesLength = attributes.size(); i < attributesLength; i++){
-			
+		for(int i = 0, attributesLength = attributes.size(); i < attributesLength; i++) {
 			attribut = attributes.get(i);
 			if (attribut.getName().equalsIgnoreCase("rowCreationDate") || attribut.getName().toLowerCase().contains("uuid")) {
 				continue;
 			}
-			toInclude = !attribut.isPrimaryKey() || !attribut.isAutoincrement();
-			
-			if(toInclude){
-
+			toInclude = pkSize == 2 || !attribut.isPrimaryKey() || !attribut.isAutoincrement();
+			if(toInclude) {
 				tmp = "?";
-				
 				if(i < attributesLength - 1){
 					tmp += ", ";
 				}
-				
 				strBuilder.append(tmp);
-
 			}
-
 		}
-
 		strBuilder.append(")");
-		
-		
 		return strBuilder.toString();
-		
 	}
 	
 	
@@ -270,36 +220,19 @@ public final class PrepareStatementBuilder {
 		return "SELECT * FROM " + dao.getTablePrefix() + "." + dao.getRawName();
 	}
 	
-	
-	private static final String get(Entity dao){
-		
+	private static final String get(Entity dao) {
 		StringBuilder strBuilder = new StringBuilder();
-
 		strBuilder.append("SELECT * FROM " + dao.getTablePrefix() + "." + dao.getRawName());
-		
-		ArrayList<Attribut> attributes = dao.getAlAttr();
-		
+		ArrayList<Attribute> attributes = dao.getAlAttr();
 		String whereStatement = null;
-		
-		for(Attribut attribut : attributes){
-			
-			if(attribut.isPrimaryKey()){
-				
-				whereStatement = attribut.getRawName()+" = ?";
+		for (Attribute attribut : attributes) {
+			if (attribut.isPrimaryKey()) {
+				whereStatement = attribut.getRawName() + " = ?";
 				break;
-				
 			}
-			
 		}
-		
-		strBuilder.append(" WHERE "+whereStatement);
-		
-		
-
+		strBuilder.append(" WHERE " + whereStatement);
 		return strBuilder.toString();
-		
 	}
-	
-	
 
 }
