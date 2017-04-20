@@ -63,6 +63,9 @@ public final class PostgreSQLDBExtractor extends DatabaseExtractor {
 						pkColumnName = rs.getString("COLUMN_NAME");
 						pkColumnNames.add(pkColumnName);
 					}
+					if (pkColumnNames.size() > 1) {
+						System.out.println(tablename + " size : " + pkColumnNames.size());					
+					}
 					currentEntite = new Entity(dbName, tablePrefix, tablename);
 					if (tablePrefix.equalsIgnoreCase("Codes")) {
 						currentEntite.setCodeTable(true);
