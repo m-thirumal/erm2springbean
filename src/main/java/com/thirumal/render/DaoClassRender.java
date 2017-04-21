@@ -180,7 +180,7 @@ public class DaoClassRender extends BaseClassRender {
 		output.append(tabulation + "@Override" + lineSeparator);
 		output.append(tabulation+"public "+ modelFileName + " get(Integer id, String whereClause) {" +  lineSeparator);
 		output.append(tabulation + tabulation + "return jdbcTemplate.queryForObject(environment.getProperty(\"" + modelFileName + ".getBy/* whereClause*/" +
-				"\"), new Object[] { whereClause }, new " + modelFileName + "RowMapper());" + lineSeparator + tabulation + "}" + lineSeparator + lineSeparator);
+				"\"), new Object[] { id, whereClause }, new " + modelFileName + "RowMapper());" + lineSeparator + tabulation + "}" + lineSeparator + lineSeparator);
 		/* LIST METHOD*/
 		output.append(tabulation + "@Override" + lineSeparator);
 		output.append(tabulation+"public List<"+ modelFileName + "> list(String id) {" +  lineSeparator);
