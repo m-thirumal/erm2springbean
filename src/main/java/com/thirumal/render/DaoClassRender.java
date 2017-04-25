@@ -33,6 +33,7 @@ public class DaoClassRender extends BaseClassRender {
 		addMandatoryPackage("org.springframework.jdbc.core.JdbcTemplate");
 		addMandatoryPackage("org.springframework.jdbc.core.PreparedStatementCreator");
 		addMandatoryPackage("org.springframework.jdbc.core.RowMapper");
+		addMandatoryPackage("org.springframework.dao.EmptyResultDataAccessException");
 		addMandatoryPackage("org.springframework.jdbc.support.GeneratedKeyHolder");
 		addMandatoryPackage("org.springframework.jdbc.support.KeyHolder");
 		addMandatoryPackage("org.springframework.stereotype.Repository");
@@ -174,13 +175,22 @@ public class DaoClassRender extends BaseClassRender {
 		/* get Method */
 		output.append(tabulation + "@Override" + lineSeparator);
 		output.append(tabulation+"public "+ modelFileName + " get(Integer id) {" +  lineSeparator);
-		output.append(tabulation + tabulation + "return jdbcTemplate.queryForObject(environment.getProperty(\"" + modelFileName + ".get\"), new Object[] { id }, new " +
-				modelFileName + "RowMapper());" + lineSeparator + tabulation + "}" + lineSeparator + lineSeparator);
+		output.append(tabulation + tabulation + "try {" + lineSeparator);
+		
+		output.append(tabulation + tabulation + tabulation + "return jdbcTemplate.queryForObject(environment.getProperty(\"" + modelFileName + ".get\"), new Object[] { id }, new " +
+				modelFileName + "RowMapper());" + lineSeparator );
+		output.append(tabulation + tabulation + "} catch (EmptyResultDataAccessException e) {" + lineSeparator + tabulation + tabulation + 
+				tabulation + "return null;" + lineSeparator + tabulation + tabulation + "}" + lineSeparator);
+		output.append(tabulation + "}" + lineSeparator + lineSeparator);
 		/* Get where method */
 		output.append(tabulation + "@Override" + lineSeparator);
 		output.append(tabulation+"public "+ modelFileName + " get(Integer id, String whereClause) {" +  lineSeparator);
-		output.append(tabulation + tabulation + "return jdbcTemplate.queryForObject(environment.getProperty(\"" + modelFileName + ".getBy/* whereClause*/" +
-				"\"), new Object[] { id, whereClause }, new " + modelFileName + "RowMapper());" + lineSeparator + tabulation + "}" + lineSeparator + lineSeparator);
+		output.append(tabulation + tabulation + "try {" + lineSeparator);
+		output.append(tabulation + tabulation + tabulation + "return jdbcTemplate.queryForObject(environment.getProperty(\"" + modelFileName + ".getBy/* whereClause*/" +
+				"\"), new Object[] { id, whereClause }, new " + modelFileName + "RowMapper());" + lineSeparator );
+		output.append(tabulation + tabulation + "} catch (EmptyResultDataAccessException e) {" + lineSeparator + tabulation + tabulation + 
+				tabulation + "return null;" + lineSeparator + tabulation + tabulation + "}" + lineSeparator);
+		output.append(tabulation + "}" + lineSeparator + lineSeparator);
 		/* LIST METHOD*/
 		output.append(tabulation + "@Override" + lineSeparator);
 		output.append(tabulation+"public List<"+ modelFileName + "> list(String id) {" +  lineSeparator);
