@@ -28,7 +28,7 @@ public final class PostgreSQLDBExtractor extends DatabaseExtractor {
 		String dbName = Configuration.getDbName();
 		Connection connection = Configuration.getConnection();
 		DatabaseMetaData metadata = connection.getMetaData();
-		ResultSet resultSet = metadata.getColumns(dbName, "icms", null, null);
+		ResultSet resultSet = metadata.getColumns(dbName, "indsolv", null, null);
 
 		List<Entity> alTables = new ArrayList<Entity>();
 		Entity currentEntite = null;
