@@ -184,10 +184,19 @@ public class DaoClassRender extends BaseClassRender {
 		output.append(tabulation + "}" + lineSeparator + lineSeparator);
 		/* Get where method */
 		output.append(tabulation + "@Override" + lineSeparator);
+		output.append(tabulation+"public "+ modelFileName + " get(String id, String whereClause) {" +  lineSeparator);
+		output.append(tabulation + tabulation + "try {" + lineSeparator);
+		output.append(tabulation + tabulation + tabulation + "return jdbcTemplate.queryForObject(environment.getProperty(\"" + modelFileName + ".getBy\" + whereClause" +
+				"), new Object[] { id }, new " + modelFileName + "RowMapper());" + lineSeparator );
+		output.append(tabulation + tabulation + "} catch (EmptyResultDataAccessException e) {" + lineSeparator + tabulation + tabulation + 
+				tabulation + "return null;" + lineSeparator + tabulation + tabulation + "}" + lineSeparator);
+		output.append(tabulation + "}" + lineSeparator + lineSeparator);
+		/* Get where method */
+		output.append(tabulation + "@Override" + lineSeparator);
 		output.append(tabulation+"public "+ modelFileName + " get(Integer id, String whereClause) {" +  lineSeparator);
 		output.append(tabulation + tabulation + "try {" + lineSeparator);
-		output.append(tabulation + tabulation + tabulation + "return jdbcTemplate.queryForObject(environment.getProperty(\"" + modelFileName + ".getBy/* whereClause*/" +
-				"\"), new Object[] { id, whereClause }, new " + modelFileName + "RowMapper());" + lineSeparator );
+		output.append(tabulation + tabulation + tabulation + "return jdbcTemplate.queryForObject(environment.getProperty(\"" + modelFileName + ".getBy\" + whereClause" +
+				"), new Object[] { id }, new " + modelFileName + "RowMapper());" + lineSeparator );
 		output.append(tabulation + tabulation + "} catch (EmptyResultDataAccessException e) {" + lineSeparator + tabulation + tabulation + 
 				tabulation + "return null;" + lineSeparator + tabulation + tabulation + "}" + lineSeparator);
 		output.append(tabulation + "}" + lineSeparator + lineSeparator);
