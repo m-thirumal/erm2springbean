@@ -202,14 +202,22 @@ public class DaoClassRender extends BaseClassRender {
 		output.append(tabulation + "}" + lineSeparator + lineSeparator);
 		/* LIST METHOD*/
 		output.append(tabulation + "@Override" + lineSeparator);
-		output.append(tabulation+"public List<"+ modelFileName + "> list(String id) {" +  lineSeparator);
-		output.append(tabulation + tabulation + "return jdbcTemplate.query(environment.getProperty(\"" + modelFileName + ".listBy/*whereClause*/" +
-				"\"), new Object[] { id }, new " + modelFileName + "RowMapper());" + lineSeparator + tabulation +  "}" + lineSeparator + lineSeparator);
+		output.append(tabulation+"public List<"+ modelFileName + "> list(String id, String whereClause) {" +  lineSeparator);
+		output.append(tabulation + tabulation + "try {" + lineSeparator);
+		output.append(tabulation + tabulation + tabulation + "return jdbcTemplate.query(environment.getProperty(\"" + modelFileName + ".listBy\" + whereClause" +
+				"), new Object[] { id }, new " + modelFileName + "RowMapper());" + lineSeparator );
+		output.append(tabulation + tabulation + "} catch (EmptyResultDataAccessException e) {" + lineSeparator + tabulation + tabulation + 
+				tabulation + "return null;" + lineSeparator + tabulation + tabulation + "}" + lineSeparator);
+		output.append(tabulation + "}" + lineSeparator + lineSeparator);
 		/* List method*/
 		output.append(tabulation + "@Override" + lineSeparator);
 		output.append(tabulation+"public List<"+ modelFileName + "> list() {" +  lineSeparator);
-		output.append(tabulation + tabulation + "return jdbcTemplate.query(environment.getProperty(\"" + modelFileName + ".list" +
-				"\"), new " + modelFileName + "RowMapper());" + lineSeparator + tabulation +  "}" + lineSeparator + lineSeparator);
+		output.append(tabulation + tabulation + "try {" + lineSeparator);
+		output.append(tabulation + tabulation + tabulation + "return jdbcTemplate.query(environment.getProperty(\"" + modelFileName + ".list" +
+				"\"), new " + modelFileName + "RowMapper());" + lineSeparator );
+		output.append(tabulation + tabulation + "} catch (EmptyResultDataAccessException e) {" + lineSeparator + tabulation + tabulation + 
+				tabulation + "return null;" + lineSeparator + tabulation + tabulation + "}" + lineSeparator);
+		output.append(tabulation + "}" + lineSeparator + lineSeparator);
 		/* update method*/
 		output.append(tabulation + "@Override" + lineSeparator);
 		output.append(tabulation+"public "+ modelFileName + " update(" + modelFileName + " " + classNameLowerCase + ") {" +  lineSeparator);
