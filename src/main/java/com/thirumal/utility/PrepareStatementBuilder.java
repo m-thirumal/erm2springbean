@@ -125,7 +125,8 @@ public final class PrepareStatementBuilder {
 		boolean toInclude = false;
 		for(int i = 0, attributesLength = attributes.size(); i < attributesLength; i++){
 			attribut = attributes.get(i);
-			if (attribut.getName().equalsIgnoreCase("rowCreationDate") || attribut.getName().equalsIgnoreCase("rowUpdatedDate")) {
+			if (attribut.getName().equalsIgnoreCase("rowCreationDate") || attribut.getName().equalsIgnoreCase("rowUpdatedDate") ||
+					attribut.getName().equalsIgnoreCase("rowCreatedBy")) {
 				continue;
 			}
 			toInclude = !attribut.isPrimaryKey() || !attribut.isAutoincrement();
@@ -138,13 +139,14 @@ public final class PrepareStatementBuilder {
 			}
 		}
 		String whereStatement = null;
+		int numberOfPrimaryKey = 0;
 		for(Attribute attr : attributes){
-			if (attribut.getName().equalsIgnoreCase("rowCreationDate") || attribut.getName().equalsIgnoreCase("rowUpdatedDate")) {
-				continue;
-			}
-			if(attr.isPrimaryKey()){
-				whereStatement = attr.getRawName()+" = ?";
-				break;
+			if(attr.isPrimaryKey() && numberOfPrimaryKey == 0){
+				whereStatement = attr.getRawName() + " = ?";
+				numberOfPrimaryKey++;
+			} else if (attr.isPrimaryKey()) {
+				whereStatement += " AND " + attr.getRawName() +" = ?";
+				numberOfPrimaryKey++;
 			}
 		}
 		strBuilder.append(" WHERE "+whereStatement);

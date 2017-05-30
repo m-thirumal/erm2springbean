@@ -238,7 +238,18 @@ public class DaoClassRender extends BaseClassRender {
 				if ((i + 1) < attributesLenght) {
 					output.append(tabulation + tabulation + tabulation + classNameLowerCase + "." + methodName + "," + lineSeparator);
 				} else {
-					output.append(tabulation + tabulation + tabulation + classNameLowerCase + "." + methodName + ");" + lineSeparator);
+					if (pkSize == 1) {
+						output.append(tabulation + tabulation + tabulation + classNameLowerCase + "." + methodName +"," + lineSeparator + tabulation +
+								tabulation + tabulation + classNameLowerCase + ".get" + StringHelper.saniziteForClassName(pkAttributes.get(0)) +"());" + lineSeparator);
+					} else if(pkSize ==2) { 
+						output.append(tabulation + tabulation + tabulation + classNameLowerCase + "." + methodName +"," + lineSeparator + tabulation +
+								tabulation + tabulation + classNameLowerCase + ".get" + StringHelper.saniziteForClassName(pkAttributes.get(0)) +"()," +
+								lineSeparator + tabulation + tabulation + tabulation + classNameLowerCase + ".get" +
+								StringHelper.saniziteForClassName(pkAttributes.get(1))+"());" 
+								+ lineSeparator);
+					} else { //TODO for composite key morethan two
+						output.append(tabulation + tabulation + tabulation + classNameLowerCase + "." + methodName + ");" + lineSeparator);
+					}
 				}
 			}
 		}
