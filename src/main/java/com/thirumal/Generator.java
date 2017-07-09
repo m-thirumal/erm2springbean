@@ -2,7 +2,12 @@ package com.thirumal;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
@@ -23,7 +28,7 @@ public class Generator {
 	
 	private	static	final	Logger	LOGGER		=	Logger.getLogger(Generator.class.getName());
 	
-    public static void main( String[] args )    {
+    public static void main( String[] args ) throws SQLException    {
         LOGGER.info("Starting generator");
 		FileHandler 	fileHandler 	= 	null;
 		String			logPath			=	Configuration.getTargetDirectory() + File.separator + Configuration.getLogFileName();
@@ -43,10 +48,27 @@ public class Generator {
 		LOGGER.addHandler(new ConsoleHandler());
 		LOGGER.info("DB name: "+ Configuration.getDbName());
 		LOGGER.info("Extracting entities");		
-		PostgreSQLDBExtractor dbExtractor		= 	new PostgreSQLDBExtractor(Configuration.getInstance());
+		Scanner scanner = new Scanner(System.in);
+		/*System.out.println("Enter Y for all schema and N to specify schema");
+		String schema = scanner.next();
+		if (schema.equalsIgnoreCase("Y")) {
+			Statement  statement =  Configuration.getInstance().getConnection().createStatement();
+			ResultSet resultSet = statement.executeQuery("select schema_name from information_schema.schemata");
+			while(resultSet.next()) {
+				generator(resultSet.getString("schema_name"));
+			}
+		} else {*/
+			System.out.println("Enter the schema Name: ");
+			generator(scanner.next());
+	//	}
+	
+    }
+    
+    static void generator(String schemaName) {
+    		PostgreSQLDBExtractor dbExtractor		= 	new PostgreSQLDBExtractor(Configuration.getInstance());
 		ArrayList<Entity> entities	=	null;		
 		try {
-			entities = (ArrayList<Entity>) dbExtractor.getEntities();
+			entities = (ArrayList<Entity>) dbExtractor.getEntities(schemaName);
 		} catch (Exception ex) {
 			LOGGER.severe(ex.getMessage());
 		}		

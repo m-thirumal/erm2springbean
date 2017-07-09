@@ -23,13 +23,13 @@ public final class PostgreSQLDBExtractor extends DatabaseExtractor {
 		super(configuration);
 	}
 
-	public List<Entity> getEntities() throws Exception {
+	public List<Entity> getEntities(String schemaName) throws Exception {
 
 		String dbName = Configuration.getDbName();
 		Connection connection = Configuration.getConnection();
 		DatabaseMetaData metadata = connection.getMetaData();
-		ResultSet resultSet = metadata.getColumns(dbName, "indsolv", null, null);
-
+		ResultSet resultSet = metadata.getColumns(dbName, schemaName, null, null);
+		
 		List<Entity> alTables = new ArrayList<Entity>();
 		Entity currentEntite = null;
 		ArrayList<Attribute> alAttributs = null;

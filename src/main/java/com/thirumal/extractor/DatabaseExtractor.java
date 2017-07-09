@@ -13,7 +13,7 @@ public abstract class DatabaseExtractor {
 		this.configuration	= configuration;
 	}
 	
-	public abstract List<Entity> getEntities() throws Exception;
+	public abstract List<Entity> getEntities(String schemaName) throws Exception;
 	
 	public Configuration getConfiguration(){
 		return configuration;
