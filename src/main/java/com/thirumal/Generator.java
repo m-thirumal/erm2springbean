@@ -2,10 +2,7 @@ package com.thirumal;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.ConsoleHandler;
@@ -48,6 +45,7 @@ public class Generator {
 		LOGGER.addHandler(new ConsoleHandler());
 		LOGGER.info("DB name: "+ Configuration.getDbName());
 		LOGGER.info("Extracting entities");		
+		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
 		/*System.out.println("Enter Y for all schema and N to specify schema");
 		String schema = scanner.next();
@@ -89,20 +87,22 @@ public class Generator {
 		targetDirectory	= Configuration.getTargetModelDirectory();
 		entityPckg 		= Configuration.getModelPackage();		
 		LOGGER.info("Saving entities model at "+ targetDirectory);	
+		
+		/* Writing model*/
 		for(Entity entity : entities){			
 			//Setting pckg from the Configuration
 			entity.setModelPackage(entityPckg);			
 			className 		= 	entity.getName();
-			fileName		=	Configuration.getModelFileName(className)+".java";
+			fileName		    =	Configuration.getModelFileName(className) + ".java";
 			classRender		=	new ModelClassRender(entity, Configuration.getInstance());
 			try {
-				classContent	=	classRender.render();
+				classContent = classRender.render();
 			} catch (Exception ex) {
 				LOGGER.severe(ex.getMessage());
 				break;
 			}
 			try {
-				LOGGER.info("Create model "+className+". Target path: "+targetDirectory+File.separator+fileName);
+				LOGGER.info("Create model " + className + ". Target path: " + targetDirectory + File.separator + fileName);
 				ERM2BeansHelper.writeFile(classContent, targetDirectory, fileName, false);
 			} catch (Exception ex) {
 				LOGGER.severe("Impossible to create the Model "+className+". Exception message: "+ex.getMessage());

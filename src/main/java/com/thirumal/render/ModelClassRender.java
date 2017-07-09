@@ -26,11 +26,11 @@ public class ModelClassRender extends BaseClassRender {
 		
 		String lineSeparator 	= 	StringHelper.lineSeparator;
 		String tabulation		=	StringHelper.tabulation;
-		Entity entity				=	getEntity();
+		Entity entity			=	getEntity();
 		
 		entity.addInterface("java.io.Serializable");
 		
-		output.append("package "+entity.getModelPackage()+";");
+		output.append("package " + entity.getModelPackage() + ";");
 		
 		output.append(lineSeparator + lineSeparator);
 		
@@ -87,11 +87,15 @@ public class ModelClassRender extends BaseClassRender {
 
 		output.append(tabulation+"private static final long serialVersionUID = 1L;"+lineSeparator+lineSeparator);
 
+		//Declarating fields
 		output.append(tabulation+"//Declarating fields" + lineSeparator);
 		
 		for (Attribute eachattr : entity.getAlAttr()){
 			//TODO: parser le nom de la bd snakeCase en camelCase
 			output.append("	private " + eachattr.getJavaType() + " " + eachattr.getName() + ";" + lineSeparator);
+			/*if (eachattr) {
+				
+			}*/
 		}
 		
 		
@@ -112,7 +116,7 @@ public class ModelClassRender extends BaseClassRender {
 		else {
 			output.append(lineSeparator);
 		}
-
+		//Default constructor
 		output.append(tabulation+ "//Default constructor" + lineSeparator);	
 		output.append("	public " + entity.getName() + "() {}" + lineSeparator);
 		output.append(lineSeparator);

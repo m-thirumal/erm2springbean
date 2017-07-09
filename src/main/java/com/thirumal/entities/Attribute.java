@@ -17,6 +17,7 @@ public class Attribute {
 	private String javaType;
 	private String javaPackagePath;
 	private boolean primaryKey;
+	private boolean foreignKey;
 	private boolean autoincrement;
 	private String sqlType;
 	private String rawName;
@@ -30,7 +31,7 @@ public class Attribute {
 		this.size 	= 	size;
 		isIncluded 	= 	true;
 		primaryKey	= 	false;
-
+		foreignKey  =   false;
 		setSqlType(type);
 		
 		doJavaMapping();
@@ -126,6 +127,20 @@ public class Attribute {
 
 	public void setPrimaryKey(boolean primaryKey) {
 		this.primaryKey = primaryKey;
+	}
+
+	/**
+	 * @return the foreignKey
+	 */
+	public boolean isForeignKey() {
+		return foreignKey;
+	}
+
+	/**
+	 * @param foreignKey the foreignKey to set
+	 */
+	public void setForeignKey(boolean foreignKey) {
+		this.foreignKey = foreignKey;
 	}
 
 	public String getSqlType() {

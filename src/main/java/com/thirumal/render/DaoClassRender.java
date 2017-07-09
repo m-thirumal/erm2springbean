@@ -182,6 +182,9 @@ public class DaoClassRender extends BaseClassRender {
 		output.append(tabulation + tabulation + "} catch (EmptyResultDataAccessException e) {" + lineSeparator + tabulation + tabulation + 
 				tabulation + "return null;" + lineSeparator + tabulation + tabulation + "}" + lineSeparator);
 		output.append(tabulation + "}" + lineSeparator + lineSeparator);
+		/*Get with locale */
+	//	output.append(tabulation+"public "+ modelFileName + " getByLocale(Integer id, Integer localeCd) {" +  lineSeparator);
+		
 		/* Get where method */
 		output.append(tabulation + "@Override" + lineSeparator);
 		output.append(tabulation+"public "+ modelFileName + " get(String id, String whereClause) {" +  lineSeparator);
