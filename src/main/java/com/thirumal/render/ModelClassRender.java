@@ -21,12 +21,12 @@ public class ModelClassRender extends BaseClassRender {
 
 	@Override
 	public String render() throws Exception {
-		
 		StringBuffer output = new StringBuffer();
 		
 		String lineSeparator 	= 	StringHelper.lineSeparator;
 		String tabulation		=	StringHelper.tabulation;
 		Entity entity			=	getEntity();
+		System.out.println(entity.getName());
 		
 		entity.addInterface("java.io.Serializable");
 		
@@ -91,11 +91,11 @@ public class ModelClassRender extends BaseClassRender {
 		output.append(tabulation+"//Declarating fields" + lineSeparator);
 		
 		for (Attribute eachattr : entity.getAlAttr()){
-			//TODO: parser le nom de la bd snakeCase en camelCase
 			output.append("	private " + eachattr.getJavaType() + " " + eachattr.getName() + ";" + lineSeparator);
-			/*if (eachattr) {
-				
-			}*/
+			if (eachattr.isForeignKey() && eachattr.getRawName().toLowerCase().endsWith("_cd")) {
+				output.append("	private String " + eachattr.getName().substring(0, eachattr.getName().length() - 2) + "Locale" + ";" 
+						+ lineSeparator);
+			}
 		}
 		
 		
@@ -128,12 +128,23 @@ public class ModelClassRender extends BaseClassRender {
 			if (!(i == entity.getAlAttr().toArray().length-1)){
 				output.append(", ");
 			}
+			if (entity.getAlAttr().get(i).isForeignKey() && entity.getAlAttr().get(i).getRawName().toLowerCase().endsWith("_cd")) {
+				output.append("String " + entity.getAlAttr().get(i).getName().substring(0, 
+						entity.getAlAttr().get(i).getName().length() - 2) + "Locale");
+				if (!(i == entity.getAlAttr().toArray().length-1)){
+					output.append(", ");
+				}
+			}			
 		}
 		
 		output.append(") {" + lineSeparator);
 		
 		for (Attribute eachattr : entity.getAlAttr()){
 			output.append("		this." + eachattr.getName() + " = " + eachattr.getName() + ";" + lineSeparator);
+			if (eachattr.isForeignKey() && eachattr.getRawName().toLowerCase().endsWith("_cd")) {
+				output.append("		this." + eachattr.getName().substring(0, eachattr.getName().length() - 2) + "Locale = " + 
+						eachattr.getName().substring(0, eachattr.getName().length() - 2) + "Locale;" + lineSeparator);
+			}
 		}
 		
 		output.append("	}" + lineSeparator);		
@@ -145,33 +156,43 @@ public class ModelClassRender extends BaseClassRender {
 		for (Attribute eachattr : entity.getAlAttr()){
 			//Getter
 			output.append("	public " + eachattr.getJavaType() + " ");
-			
 			if(!eachattr.getJavaType().equalsIgnoreCase("Boolean")){
-				resultGetSetName = "get"+StringHelper.saniziteForClassName(eachattr.getName());				
+				resultGetSetName = "get" + StringHelper.saniziteForClassName(eachattr.getName());				
 			}
 			else {
 				resultGetSetName = StringHelper.getMethodNameForBoolean(StringHelper.sanitizeForAttributName(eachattr.getName()));
 			}
-			
-			
 			output.append(resultGetSetName);
 			output.append("() {" + lineSeparator);
 			output.append("		return " + eachattr.getName() + ";" + lineSeparator);
 			output.append("	}" + lineSeparator + lineSeparator);
+			if (eachattr.isForeignKey() && eachattr.getRawName().toLowerCase().endsWith("_cd")) { //Foreign key
+				output.append("	public String " + resultGetSetName.substring(0, resultGetSetName.length() - 2) + "Locale() {" + lineSeparator  +
+						"		return " + eachattr.getName().substring(0, eachattr.getName().length() - 2) + "Locale" + ";" + lineSeparator +
+						"	}" + lineSeparator + lineSeparator); 
+			}
+			
 			//Setter
 			output.append("	public void set");
-			
 			if(!eachattr.getJavaType().equalsIgnoreCase("Boolean")){
 				resultGetSetName = StringHelper.saniziteForClassName(eachattr.getName());				
 			}
 			else {
 				resultGetSetName = StringHelper.getMethodNameForBoolean(eachattr.getName());
 			}
-			
 			output.append(resultGetSetName);
 			output.append("(" + eachattr.getJavaType() + " " + eachattr.getName() + ") {" + lineSeparator);
 			output.append("		this." + eachattr.getName() + " = " + eachattr.getName() + ";" + lineSeparator);
 			output.append("	}" + lineSeparator + lineSeparator);
+			if (eachattr.isForeignKey() && eachattr.getRawName().toLowerCase().endsWith("_cd")) { //Foreign key
+				String locale = eachattr.getName().substring(0, eachattr.getName().length() - 2) + "Locale";
+				output.append(" 	public void set" + resultGetSetName.substring(0, resultGetSetName.length() - 2) + "Locale(String "+  
+						locale + ") {" + lineSeparator );
+				output.append("		this." + locale + " = " + locale + ";" + lineSeparator);
+				output.append("	}" + lineSeparator + lineSeparator);
+			}
+			
+			
 		}
 		// toString()
 		output.append(tabulation + "/* (non-Javadoc)" + lineSeparator);
@@ -187,7 +208,10 @@ public class ModelClassRender extends BaseClassRender {
 			} else {
 				output.append(tabulation + tabulation + tabulation + tabulation +  " + " + "\", " + entity.getAlAttr().get(i).getName() + " = \" + " + entity.getAlAttr().get(i).getName() + lineSeparator);
 			}
-			
+			if (entity.getAlAttr().get(i).isForeignKey() && entity.getAlAttr().get(i).getRawName().toLowerCase().endsWith("_cd")) {
+				String locale = entity.getAlAttr().get(i).getName().substring(0, entity.getAlAttr().get(i).getName().length() - 2) + "Locale";
+				output.append(tabulation + tabulation + tabulation + tabulation +  " + " + "\", " + locale + " = \" + " + locale + lineSeparator);
+			}
 		}
 		output.append(lineSeparator + tabulation + "}" + lineSeparator + lineSeparator);
 		

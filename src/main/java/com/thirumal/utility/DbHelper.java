@@ -53,7 +53,7 @@ public final class DbHelper {
 		javaTypesResultSet.put("bpchar", "%s.getString(%s)");
 		javaTypesResultSet.put("inet", "%s.getString(%s)");
 		javaTypesResultSet.put("UUID", "%s.getObject(%s)");
-		
+		javaTypesResultSet.put("citext", "%s.getString(%s)");
 	}
 	
 	private static void mapJavaTypesPrepareStatementSet(){
@@ -86,6 +86,7 @@ public final class DbHelper {
 		javaTypesPreparedStatementSet.put("bpchar", "%s.setString(%s, %s)");
 		javaTypesPreparedStatementSet.put("inet", "%s.setString(%s, %s)");
 		javaTypesPreparedStatementSet.put("UUID", "%s.setObject(%s, %s)");
+		javaTypesPreparedStatementSet.put("citext", "%s.setString(%s, %s)");
 		
 	}
 	
@@ -167,7 +168,7 @@ public final class DbHelper {
 		sqlTypesJavaTypes.put("inet", "String");
 		sqlTypesJavaTypes.put("uuid", "UUID");
 		sqlTypesJavaTypes.put("bytea", "byte[]");
-		
+		sqlTypesJavaTypes.put("citext", "String");
 	}
 	
 	private static void mapSimpleNameCanonicalName(){

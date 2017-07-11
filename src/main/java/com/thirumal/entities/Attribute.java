@@ -31,7 +31,7 @@ public class Attribute {
 		this.size 	= 	size;
 		isIncluded 	= 	true;
 		primaryKey	= 	false;
-		foreignKey  =   false;
+		foreignKey  =   false; 
 		setSqlType(type);
 		
 		doJavaMapping();

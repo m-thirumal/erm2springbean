@@ -47,12 +47,18 @@ public class Generator {
 		LOGGER.info("Extracting entities");		
 		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
-		/*System.out.println("Enter Y for all schema and N to specify schema");
-		String schema = scanner.next();
+		System.out.println("Enter Y for all schema and N to specify schema");
+		/*String schema = scanner.next();
 		if (schema.equalsIgnoreCase("Y")) {
 			Statement  statement =  Configuration.getInstance().getConnection().createStatement();
 			ResultSet resultSet = statement.executeQuery("select schema_name from information_schema.schemata");
 			while(resultSet.next()) {
+				String schemaName = resultSet.getString("schema_name");
+				if (!"pg_toast".equalsIgnoreCase(schemaName) && !"pg_temp_1".equalsIgnoreCase(schemaName)
+					&& !"pg_toast_temp_1".equalsIgnoreCase(schemaName) && !"pg_catalog".equalsIgnoreCase(schemaName)
+					&& !"information_schema".equalsIgnoreCase(schemaName)) {
+					continue;
+				} 
 				generator(resultSet.getString("schema_name"));
 			}
 		} else {*/
@@ -70,7 +76,7 @@ public class Generator {
 		} catch (Exception ex) {
 			LOGGER.severe(ex.getMessage());
 		}		
-		LOGGER.info(entities.size()+" entities extracted");		
+		LOGGER.info(entities.size() + " entities extracted ");		
 		LOGGER.info("Saving entities model, dao and queries");		
 		String 			fileName		=	null;
 		String 			className		=	null;
@@ -121,7 +127,7 @@ public class Generator {
 			//Setting pckg from the Configuration
 			entity.setDaoPackage(entityPckg);
 			entity.removeInterfaces();
-			entity.addInterface("GenericDao<" + entity.getName() + " , Integer, String>");
+			entity.addInterface("GenericDao<" + entity.getName() + ", Identifier, String>");
 			className 		= 	entity.getName();
 			fileName		=	Configuration.getDaoFileName(className)+".java";
 			classRender		=	new DaoClassRender(entity, Configuration.getInstance());		

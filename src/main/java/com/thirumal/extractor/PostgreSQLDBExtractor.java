@@ -29,7 +29,6 @@ public final class PostgreSQLDBExtractor extends DatabaseExtractor {
 		Connection connection = Configuration.getConnection();
 		DatabaseMetaData metadata = connection.getMetaData();
 		ResultSet resultSet = metadata.getColumns(dbName, schemaName, null, null);
-		
 		List<Entity> alTables = new ArrayList<Entity>();
 		Entity currentEntite = null;
 		ArrayList<Attribute> alAttributs = null;
@@ -45,23 +44,34 @@ public final class PostgreSQLDBExtractor extends DatabaseExtractor {
 		String tablePrefix = null;
 
 		String pkColumnName = null;
+		String fkColumnName = null;
+		//int i = 0;
 		ArrayList<String> pkColumnNames = new ArrayList<String>();
+		ArrayList<String> fkColumnNames = new ArrayList<String>();
 		while (resultSet.next()) {
 			tableSchem = resultSet.getString("TABLE_SCHEM");
 			if (!"sys".equalsIgnoreCase(tableSchem) && !"information_schema".equalsIgnoreCase(tableSchem)
 					&& !"dbo".equalsIgnoreCase(tableSchem)) {
 				tablename = resultSet.getString("TABLE_NAME");
 				tablePrefix = resultSet.getString("TABLE_SCHEM");
+				//System.out.println("TableName  : " + tablename + "\nTablePrefix: "+ tablePrefix);
 				name = resultSet.getString("COLUMN_NAME");
 				type = resultSet.getString("TYPE_NAME");
 				size = resultSet.getInt("COLUMN_SIZE");
-				if (!checkdenom.equals(tablename)) {
-					pkColumnNames = new ArrayList<String>();
+				if (!checkdenom.equals(tablename)) { // runs total number of table times
 					// retrieve PKs
+					pkColumnNames = new ArrayList<String>();
 					ResultSet rs = metadata.getPrimaryKeys(dbName, tablePrefix, tablename);
 					while (rs.next()) {
 						pkColumnName = rs.getString("COLUMN_NAME");
 						pkColumnNames.add(pkColumnName);
+					}
+					// Retrive FK
+					fkColumnNames = new ArrayList<String>();
+					ResultSet rsFk = metadata.getImportedKeys(dbName, tablePrefix, tablename);
+					while (rsFk.next()) {
+						fkColumnName = rsFk.getString("FKCOLUMN_NAME");
+						fkColumnNames.add(fkColumnName);
 					}
 					currentEntite = new Entity(dbName, tablePrefix, tablename);
 					if (tablePrefix.equalsIgnoreCase("Codes")) {
@@ -85,6 +95,13 @@ public final class PostgreSQLDBExtractor extends DatabaseExtractor {
 							}
 						}
 					}
+					for (String fkCol : fkColumnNames) {
+						//	System.out.println("pkCol " + pkCol);
+						//	System.out.println(currentAttribut.getName());
+						if (fkCol.equalsIgnoreCase(currentAttribut.getRawName())) {
+							currentAttribut.setForeignKey(true);
+						}
+					}
 					alAttributs.add(currentAttribut);
 					currentEntite.setAlAttr(alAttributs);
 					if (!currentEntite.getName().equalsIgnoreCase("RndView")) {
@@ -104,6 +121,13 @@ public final class PostgreSQLDBExtractor extends DatabaseExtractor {
 							if (DbHelper.columnIsAutoincrement(connection, dbName, tablePrefix, tablename, pkCol)) {
 								currentAttribut.setAutoincrement(true);
 							}
+						}
+					}
+					for (String fkCol : fkColumnNames) {
+						if (fkCol.equalsIgnoreCase(currentAttribut.getRawName())) {
+							//System.out.println("fkCol "+fkCol);
+							//System.out.println(currentAttribut.getName());
+							currentAttribut.setForeignKey(true);
 						}
 					}
 					alAttributs.add(currentAttribut);
