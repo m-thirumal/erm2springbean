@@ -180,7 +180,7 @@ public class DaoClassRender extends BaseClassRender {
 		
 		output.append(tabulation + tabulation + tabulation + "return jdbcTemplate.queryForObject(environment.getProperty(\"" + modelFileName + ".get\"), new Object[] {"
 				+ lineSeparator + tabulation + tabulation + tabulation + tabulation + "identifier.getLocaleCd()," 
-				+ lineSeparator + tabulation + tabulation + tabulation + tabulation + "Integer.parseInt(identifier.getId())"
+				+ lineSeparator + tabulation + tabulation + tabulation + tabulation + "identifier.getId()"
 				+ lineSeparator + tabulation + tabulation + tabulation + "}, new " +
 				modelFileName + "RowMapper());" + lineSeparator );
 		output.append(tabulation + tabulation + "} catch (EmptyResultDataAccessException e) {" + lineSeparator + tabulation + tabulation + 
@@ -194,7 +194,7 @@ public class DaoClassRender extends BaseClassRender {
 		output.append(tabulation + tabulation + tabulation + "return jdbcTemplate.queryForObject(environment.getProperty(\"" + modelFileName + ".getBy\" + whereClause" +
 				"), new Object[] { "
 				+ lineSeparator + tabulation + tabulation + tabulation + tabulation + "identifier.getLocaleCd()," 
-				+ lineSeparator + tabulation + tabulation + tabulation + tabulation + "Integer.parseInt(identifier.getId())"
+				+ lineSeparator + tabulation + tabulation + tabulation + tabulation + "identifier.getId()"
 				+ lineSeparator + tabulation + tabulation + tabulation + "}, new " + modelFileName + "RowMapper());" + lineSeparator );
 		output.append(tabulation + tabulation + "} catch (EmptyResultDataAccessException e) {" + lineSeparator + tabulation + tabulation + 
 				tabulation + "return null;" + lineSeparator + tabulation + tabulation + "}" + lineSeparator);
@@ -215,7 +215,7 @@ public class DaoClassRender extends BaseClassRender {
 		output.append(tabulation + tabulation + tabulation + "return jdbcTemplate.query(environment.getProperty(\"" + modelFileName + ".list\""+ 
 				"), new Object[] { "
 				+ lineSeparator + tabulation + tabulation + tabulation + tabulation + "identifier.getLocaleCd()," 
-				+ lineSeparator + tabulation + tabulation + tabulation + tabulation + "Integer.parseInt(identifier.getId())"
+				+ lineSeparator + tabulation + tabulation + tabulation + tabulation + "identifier.getId()"
 				+ lineSeparator + tabulation + tabulation + tabulation + " }, new " + modelFileName + "RowMapper());" + lineSeparator );
 		output.append(tabulation + tabulation + "} catch (EmptyResultDataAccessException e) {" + lineSeparator + tabulation + tabulation + 
 				tabulation + "return null;" + lineSeparator + tabulation + tabulation + "}" + lineSeparator);
@@ -227,7 +227,7 @@ public class DaoClassRender extends BaseClassRender {
 		output.append(tabulation + tabulation + tabulation + "return jdbcTemplate.query(environment.getProperty(\"" + modelFileName + ".listBy\" + whereClause" +
 				"), new Object[] { "
 				+ lineSeparator + tabulation + tabulation + tabulation + tabulation + "identifier.getLocaleCd()," 
-				+ lineSeparator + tabulation + tabulation + tabulation + tabulation + "Integer.parseInt(identifier.getId())"
+				+ lineSeparator + tabulation + tabulation + tabulation + tabulation + "identifier.getId()"
 				+ lineSeparator + tabulation + tabulation + tabulation + " }, new " + modelFileName + "RowMapper());" + lineSeparator );
 		output.append(tabulation + tabulation + "} catch (EmptyResultDataAccessException e) {" + lineSeparator + tabulation + tabulation + 
 				tabulation + "return null;" + lineSeparator + tabulation + tabulation + "}" + lineSeparator);
