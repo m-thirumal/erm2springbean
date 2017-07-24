@@ -217,8 +217,8 @@ public class DaoClassRender extends BaseClassRender {
 				+ lineSeparator + tabulation + tabulation + tabulation + tabulation + "identifier.getLocaleCd()," 
 				+ lineSeparator + tabulation + tabulation + tabulation + tabulation + "identifier.getId()"
 				+ lineSeparator + tabulation + tabulation + tabulation + " }, new " + modelFileName + "RowMapper());" + lineSeparator );
-		output.append(tabulation + tabulation + "} catch (EmptyResultDataAccessException e) {" + lineSeparator + tabulation + tabulation + 
-				tabulation + "return null;" + lineSeparator + tabulation + tabulation + "}" + lineSeparator);
+		output.append(tabulation + tabulation + "} catch (Exception e) {" + lineSeparator + tabulation + tabulation + 
+				tabulation + "throw new IndsolvException(ErrorFactory.DATABASE_EXCEPTION, e.getMessage());" + lineSeparator + tabulation + tabulation + "}" + lineSeparator);
 		output.append(tabulation + "}" + lineSeparator + lineSeparator);
 		/* LIST METHOD*/
 		output.append(tabulation + "@Override" + lineSeparator);
@@ -229,8 +229,8 @@ public class DaoClassRender extends BaseClassRender {
 				+ lineSeparator + tabulation + tabulation + tabulation + tabulation + "identifier.getLocaleCd()," 
 				+ lineSeparator + tabulation + tabulation + tabulation + tabulation + "identifier.getId()"
 				+ lineSeparator + tabulation + tabulation + tabulation + " }, new " + modelFileName + "RowMapper());" + lineSeparator );
-		output.append(tabulation + tabulation + "} catch (EmptyResultDataAccessException e) {" + lineSeparator + tabulation + tabulation + 
-				tabulation + "return null;" + lineSeparator + tabulation + tabulation + "}" + lineSeparator);
+		output.append(tabulation + tabulation + "} catch (Exception e) {" + lineSeparator + tabulation + tabulation + 
+				tabulation + "throw new IndsolvException(ErrorFactory.DATABASE_EXCEPTION, e.getMessage());" + lineSeparator + tabulation + tabulation + "}" + lineSeparator);
 		output.append(tabulation + "}" + lineSeparator + lineSeparator);
 
 		/* update method*/
