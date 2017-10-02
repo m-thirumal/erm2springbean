@@ -10,7 +10,7 @@ import com.thirumal.utility.ERM2BeansHelper.StringHelper;
 
 /**
  * 
- * @author Thirumal
+ * @author திருமால்
  *
  */
 public class ModelClassRender extends BaseClassRender {
@@ -80,7 +80,7 @@ public class ModelClassRender extends BaseClassRender {
 			
 		}
 		
-		output.append("/**" + lineSeparator + " *" + lineSeparator + " * @author Thirumal" + lineSeparator + " *" + lineSeparator + " */" + lineSeparator);
+		output.append("/**" + lineSeparator + " *" + lineSeparator + " * @author திருமால்" + lineSeparator + " *" + lineSeparator + " */" + lineSeparator);
 		
 		
 		output.append("public class " + entity.getName() +(entity.hasParent() ? " extends "+entity.getParentClass() : "")+(interfacesToOuput != null ? interfacesToOuput : "")+" {" + lineSeparator + lineSeparator);

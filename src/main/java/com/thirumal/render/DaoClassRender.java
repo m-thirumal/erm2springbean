@@ -106,7 +106,7 @@ public class DaoClassRender extends BaseClassRender {
 			}
 		}
 
-		output.append("/**" + lineSeparator  + " *" + lineSeparator + " * @author Thirumal" + lineSeparator + " *" + lineSeparator + " */" + lineSeparator);
+		output.append("/**" + lineSeparator  + " *" + lineSeparator + " * @author திருமால்" + lineSeparator + " *" + lineSeparator + " */" + lineSeparator);
 		output.append("@Repository" + lineSeparator);
 		output.append("public class " + className
 				+ (getEntity().hasParent() ? " extends " + getEntity().getParentClass() : "")

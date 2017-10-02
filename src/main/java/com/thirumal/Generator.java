@@ -18,7 +18,7 @@ import com.thirumal.render.ModelClassRender;
 import com.thirumal.utility.ERM2BeansHelper;
 
 /**
- * @author Thirumal
+ * @author திருமால்
  *
  */
 public class Generator {
