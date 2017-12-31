@@ -159,7 +159,7 @@ public final class DbHelper {
 		sqlTypesJavaTypes.put("datetimeoffset", "Date");
 		
 		// PostgreSQL 
-		sqlTypesJavaTypes.put("serial", "Integer");
+		sqlTypesJavaTypes.put("serial", "Long");
 		sqlTypesJavaTypes.put("bool", "Boolean");
 		sqlTypesJavaTypes.put("int2", "Integer");
 		sqlTypesJavaTypes.put("int4", "Integer");
