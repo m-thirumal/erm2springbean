@@ -168,7 +168,7 @@ public class DaoClassRender extends BaseClassRender {
 					".getck\"), new Object[] { " + pkAttributes.get(0) + ", " + pkAttributes.get(1) + 
 					" }, new " + modelFileName + "RowMapper());" + lineSeparator + tabulation + "}" + lineSeparator + lineSeparator);
 		} else {
-			output.append(tabulation + tabulation + "return get(new Identifier(holder.getKey().intValue(), identifier.getLocaleCd()));" + lineSeparator);
+			output.append(tabulation + tabulation + "return get(new Identifier(holder.getKey().longValue(), identifier.getLocaleCd()));" + lineSeparator);
 			output.append(tabulation + "}" + lineSeparator + lineSeparator );
 		}
 		

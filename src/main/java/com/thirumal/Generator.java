@@ -104,7 +104,7 @@ public class Generator {
 			try {
 				classContent = classRender.render();
 			} catch (Exception ex) {
-				LOGGER.severe(ex.getMessage());
+				LOGGER.severe("Model is not written: " + ex.getMessage());
 				break;
 			}
 			try {
@@ -117,7 +117,7 @@ public class Generator {
 			
 		}
 		/* Writing DAOs */
-		
+		System.out.println("================================================================");
 		targetDirectory = 	Configuration.getTargetDaoDirectory();
 		entityPckg 		= 	Configuration.getDaoPackage();
 		classContent	=	new String();
