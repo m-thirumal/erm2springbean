@@ -54,6 +54,7 @@ public final class DbHelper {
 		javaTypesResultSet.put("inet", "%s.getString(%s)");
 		javaTypesResultSet.put("UUID", "%s.getObject(%s)");
 		javaTypesResultSet.put("citext", "%s.getString(%s)");
+		javaTypesResultSet.put("jsonb", "%s.getString(%s)");
 	}
 	
 	private static void mapJavaTypesPrepareStatementSet(){
@@ -87,6 +88,7 @@ public final class DbHelper {
 		javaTypesPreparedStatementSet.put("inet", "%s.setString(%s, %s)");
 		javaTypesPreparedStatementSet.put("UUID", "%s.setObject(%s, %s)");
 		javaTypesPreparedStatementSet.put("citext", "%s.setString(%s, %s)");
+		javaTypesPreparedStatementSet.put("jsonb", "%s.setString(%s, %s)");
 		
 	}
 	
@@ -169,6 +171,7 @@ public final class DbHelper {
 		sqlTypesJavaTypes.put("uuid", "UUID");
 		sqlTypesJavaTypes.put("bytea", "byte[]");
 		sqlTypesJavaTypes.put("citext", "String");
+		sqlTypesJavaTypes.put("jsonb", "String");
 	}
 	
 	private static void mapSimpleNameCanonicalName(){
@@ -190,6 +193,7 @@ public final class DbHelper {
 		simpleNamesCanonicalNames.put("UUID", "java.util.UUID");
 		simpleNamesCanonicalNames.put("Short", "java.lang.Short");
 		simpleNamesCanonicalNames.put("DateTimeOffset", "microsoft.sql.DateTimeOffset");
+		simpleNamesCanonicalNames.put("jsonb", "java.lang.String");
 		
 	}
 	

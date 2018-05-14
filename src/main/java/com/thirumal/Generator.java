@@ -104,11 +104,11 @@ public class Generator {
 			try {
 				classContent = classRender.render();
 			} catch (Exception ex) {
-				LOGGER.severe("Model is not written: " + ex.getMessage());
+				LOGGER.severe(entity.getRawName() + "Model is not written: " + ex.getMessage());
 				break;
 			}
 			try {
-				LOGGER.info("Create model " + className + ". Target path: " + targetDirectory + File.separator + fileName);
+				//LOGGER.info("Create model " + className + ". Target path: " + targetDirectory + File.separator + fileName);
 				ERM2BeansHelper.writeFile(classContent, targetDirectory, fileName, false);
 			} catch (Exception ex) {
 				LOGGER.severe("Impossible to create the Model "+className+". Exception message: "+ex.getMessage());
@@ -121,7 +121,7 @@ public class Generator {
 		targetDirectory = 	Configuration.getTargetDaoDirectory();
 		entityPckg 		= 	Configuration.getDaoPackage();
 		classContent	=	new String();
-		LOGGER.info("Saving entities DAO at "+ targetDirectory);
+		//LOGGER.info("Saving entities DAO at "+ targetDirectory);
 		ERM2BeansHelper.clearQueries(Configuration.getTargetDirectory());
 		for(Entity entity : entities) {
 			//Setting pckg from the Configuration
@@ -137,7 +137,7 @@ public class Generator {
 				LOGGER.severe("Impossible to create the DAO "+className+". Exception message: "+ex.getMessage());
 			}
 			try {
-				LOGGER.info("Create dao "+className+". Target path: "+targetDirectory+File.separator+fileName);
+				//LOGGER.info("Create dao "+className+". Target path: "+targetDirectory+File.separator+fileName);
 				ERM2BeansHelper.writeFile(classContent, targetDirectory, fileName, false);
 			} catch (Exception ex) {
 				LOGGER.severe("Impossible to create the DAO "+className+". Exception message: "+ex.getMessage());
