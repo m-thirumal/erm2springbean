@@ -55,6 +55,7 @@ public final class DbHelper {
 		javaTypesResultSet.put("UUID", "%s.getObject(%s)");
 		javaTypesResultSet.put("citext", "%s.getString(%s)");
 		javaTypesResultSet.put("jsonb", "%s.getString(%s)");
+		javaTypesResultSet.put("PGInterval", "%s.getObject(%s)");
 	}
 	
 	private static void mapJavaTypesPrepareStatementSet(){
@@ -89,6 +90,7 @@ public final class DbHelper {
 		javaTypesPreparedStatementSet.put("UUID", "%s.setObject(%s, %s)");
 		javaTypesPreparedStatementSet.put("citext", "%s.setString(%s, %s)");
 		javaTypesPreparedStatementSet.put("jsonb", "%s.setString(%s, %s)");
+		javaTypesPreparedStatementSet.put("interval", "%s.setObject(%s, %s)");
 		
 	}
 	
@@ -172,6 +174,7 @@ public final class DbHelper {
 		sqlTypesJavaTypes.put("bytea", "byte[]");
 		sqlTypesJavaTypes.put("citext", "String");
 		sqlTypesJavaTypes.put("jsonb", "String");
+		sqlTypesJavaTypes.put("interval", "PGInterval");
 	}
 	
 	private static void mapSimpleNameCanonicalName(){
@@ -194,6 +197,7 @@ public final class DbHelper {
 		simpleNamesCanonicalNames.put("Short", "java.lang.Short");
 		simpleNamesCanonicalNames.put("DateTimeOffset", "microsoft.sql.DateTimeOffset");
 		simpleNamesCanonicalNames.put("jsonb", "java.lang.String");
+		simpleNamesCanonicalNames.put("PGInterval", "org.postgresql.util.PGInterval");
 		
 	}
 	
