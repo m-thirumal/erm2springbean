@@ -105,14 +105,14 @@ public class Generator {
 				classContent = classRender.render();
 			} catch (Exception ex) {
 				LOGGER.severe(entity.getRawName() + "Model is not written: " + ex.getMessage());
-				break;
+			//	break;
 			}
 			try {
 				//LOGGER.info("Create model " + className + ". Target path: " + targetDirectory + File.separator + fileName);
 				ERM2BeansHelper.writeFile(classContent, targetDirectory, fileName, false);
 			} catch (Exception ex) {
 				LOGGER.severe("Impossible to create the Model "+className+". Exception message: "+ex.getMessage());
-				break;
+			//	break;
 			}
 			
 		}
@@ -141,7 +141,7 @@ public class Generator {
 				ERM2BeansHelper.writeFile(classContent, targetDirectory, fileName, false);
 			} catch (Exception ex) {
 				LOGGER.severe("Impossible to create the DAO "+className+". Exception message: "+ex.getMessage());
-				break;
+				//break;
 			}
 		}
 		LOGGER.info("Operation complete");

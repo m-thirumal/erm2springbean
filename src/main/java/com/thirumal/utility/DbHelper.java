@@ -56,6 +56,9 @@ public final class DbHelper {
 		javaTypesResultSet.put("citext", "%s.getString(%s)");
 		javaTypesResultSet.put("jsonb", "%s.getString(%s)");
 		javaTypesResultSet.put("PGInterval", "%s.getObject(%s)");
+		//Enum
+		javaTypesResultSet.put("nature_of_money", "%s.getString(%s)");
+		javaTypesResultSet.put("nature_of_debt", "%s.getString(%s)");
 	}
 	
 	private static void mapJavaTypesPrepareStatementSet(){
@@ -91,6 +94,9 @@ public final class DbHelper {
 		javaTypesPreparedStatementSet.put("citext", "%s.setString(%s, %s)");
 		javaTypesPreparedStatementSet.put("jsonb", "%s.setString(%s, %s)");
 		javaTypesPreparedStatementSet.put("interval", "%s.setObject(%s, %s)");
+		//Enum
+		javaTypesPreparedStatementSet.put("nature_of_money", "%s.setString(%s, %s)");
+		javaTypesPreparedStatementSet.put("nature_of_debt", "%s.setString(%s, %s)");
 		
 	}
 	
@@ -175,6 +181,9 @@ public final class DbHelper {
 		sqlTypesJavaTypes.put("citext", "String");
 		sqlTypesJavaTypes.put("jsonb", "String");
 		sqlTypesJavaTypes.put("interval", "PGInterval");
+		//ENUM
+		sqlTypesJavaTypes.put("nature_of_money", "String");
+		sqlTypesJavaTypes.put("nature_of_debt", "String");
 	}
 	
 	private static void mapSimpleNameCanonicalName(){
@@ -198,7 +207,9 @@ public final class DbHelper {
 		simpleNamesCanonicalNames.put("DateTimeOffset", "microsoft.sql.DateTimeOffset");
 		simpleNamesCanonicalNames.put("jsonb", "java.lang.String");
 		simpleNamesCanonicalNames.put("PGInterval", "org.postgresql.util.PGInterval");
-		
+		//Enum
+		simpleNamesCanonicalNames.put("nature_of_money", "java.lang.String");
+		simpleNamesCanonicalNames.put("nature_of_debt", "java.lang.String");
 	}
 	
 	
