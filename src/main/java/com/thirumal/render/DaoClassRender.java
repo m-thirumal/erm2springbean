@@ -112,12 +112,13 @@ public class DaoClassRender extends BaseClassRender {
 				+ (getEntity().hasParent() ? " extends " + getEntity().getParentClass() : "")
 				+ (interfacesToOuput != null ? interfacesToOuput : "") + " {"
 				+ lineSeparator + lineSeparator);
-		output.append(tabulation + "private final JdbcTemplate jdbcTemplate;" + lineSeparator + lineSeparator + tabulation + "@Autowired" + lineSeparator);
+		output.append(tabulation + "private final JdbcTemplate jdbcTemplate;" + lineSeparator);
 		output.append(tabulation + "private Environment environment;" + lineSeparator + lineSeparator + tabulation + "@Autowired" +
 				lineSeparator);
 		// Constructor
-		output.append(tabulation+"public " + className + "(JdbcTemplate jdbcTemplate) {" + lineSeparator);
+		output.append(tabulation+"public " + className + "(JdbcTemplate jdbcTemplate, Environment environment) {" + lineSeparator);
 		output.append(tabulation+tabulation+"this.jdbcTemplate = jdbcTemplate;" + lineSeparator);
+		output.append(tabulation+tabulation+"this.environment = environment;" + lineSeparator);
 		output.append(tabulation+"}" + lineSeparator + lineSeparator);
 		
 		/* Create */

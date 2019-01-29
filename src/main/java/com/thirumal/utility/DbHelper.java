@@ -59,6 +59,9 @@ public final class DbHelper {
 		//Enum
 		javaTypesResultSet.put("nature_of_money", "%s.getString(%s)");
 		javaTypesResultSet.put("nature_of_debt", "%s.getString(%s)");
+		javaTypesResultSet.put("auction_type", "%s.getString(%s)");
+		javaTypesResultSet.put("city", "%s.getString(%s)");
+		javaTypesResultSet.put("postal_code", "%s.getString(%s)");
 	}
 	
 	private static void mapJavaTypesPrepareStatementSet(){
@@ -97,7 +100,9 @@ public final class DbHelper {
 		//Enum
 		javaTypesPreparedStatementSet.put("nature_of_money", "%s.setString(%s, %s)");
 		javaTypesPreparedStatementSet.put("nature_of_debt", "%s.setString(%s, %s)");
-		
+		javaTypesPreparedStatementSet.put("auction_type", "%s.setString(%s, %s)");
+		javaTypesPreparedStatementSet.put("city", "%s.setString(%s, %s)");
+		javaTypesPreparedStatementSet.put("postal_code", "%s.setString(%s, %s)");
 	}
 	
 	private static void	mapSQLTypesJavaTypes(){
@@ -184,6 +189,9 @@ public final class DbHelper {
 		//ENUM
 		sqlTypesJavaTypes.put("nature_of_money", "String");
 		sqlTypesJavaTypes.put("nature_of_debt", "String");
+		sqlTypesJavaTypes.put("auction_type", "String");
+		sqlTypesJavaTypes.put("postal_code", "String");
+		sqlTypesJavaTypes.put("city", "String");
 	}
 	
 	private static void mapSimpleNameCanonicalName(){
@@ -210,6 +218,9 @@ public final class DbHelper {
 		//Enum
 		simpleNamesCanonicalNames.put("nature_of_money", "java.lang.String");
 		simpleNamesCanonicalNames.put("nature_of_debt", "java.lang.String");
+		simpleNamesCanonicalNames.put("auction_type", "java.lang.String");
+		simpleNamesCanonicalNames.put("postal_code", "java.lang.String");
+		simpleNamesCanonicalNames.put("city", "java.lang.String");
 	}
 	
 	

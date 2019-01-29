@@ -155,6 +155,7 @@ public class ModelClassRender extends BaseClassRender {
 		
 		for (Attribute eachattr : entity.getAlAttr()){
 			//Getter
+			//System.out.println(eachattr);
 			output.append("	public " + eachattr.getJavaType() + " ");
 			if(!eachattr.getJavaType().equalsIgnoreCase("Boolean")){
 				resultGetSetName = "get" + StringHelper.saniziteForClassName(eachattr.getName());				
