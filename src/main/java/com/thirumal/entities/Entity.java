@@ -133,4 +133,12 @@ public class Entity {
 		this.codeTable = codeTable;
 	}
 
+	@Override
+	public String toString() {
+		return "Entity [nom=" + nom + ", dbName=" + dbName + ", tablePrefix=" + tablePrefix + ", alAttr=" + alAttr
+				+ ", parentClass=" + parentClass + ", interfaces=" + interfaces + ", modelPckg=" + modelPckg
+				+ ", daoPckg=" + daoPckg + ", rawName=" + rawName + ", codeTable=" + codeTable + ", constantes="
+				+ constantes + "]";
+	}
+
 }

@@ -76,7 +76,8 @@ public class Generator {
 		} catch (Exception ex) {
 			LOGGER.severe(ex.getMessage());
 		}		
-		LOGGER.info(entities.size() + " entities extracted ");		
+		LOGGER.info(entities.size() + " entities extracted ");	
+		entities.stream().forEach(System.out::println);
 		LOGGER.info("Saving entities model, dao and queries");		
 		String 			fileName		=	null;
 		String 			className		=	null;
