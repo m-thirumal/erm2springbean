@@ -22,7 +22,6 @@ public class Attribute {
 	private String sqlType;
 	private String rawName;
 	
-	//Constructeur param�tr�
 	public Attribute(String name, String type, Integer size) {
 		
 		rawName		=	name;
@@ -149,5 +148,13 @@ public class Attribute {
 
 	public void setSqlType(String sqlType) {
 		this.sqlType = sqlType;
+	}
+
+	@Override
+	public String toString() {
+		return "Attribute [name=" + name + ", type=" + type + ", size=" + size + ", isIncluded=" + isIncluded
+				+ ", javaType=" + javaType + ", javaPackagePath=" + javaPackagePath + ", primaryKey=" + primaryKey
+				+ ", foreignKey=" + foreignKey + ", autoincrement=" + autoincrement + ", sqlType=" + sqlType
+				+ ", rawName=" + rawName + "]";
 	}
 }
